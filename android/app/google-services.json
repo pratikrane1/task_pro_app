@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "594459668413",
+    "project_id": "task-pro-b892e",
+    "storage_bucket": "task-pro-b892e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594459668413:android:471cd6d6f850bee4c02cd4",
+        "android_client_info": {
+          "package_name": "com.task.pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnqCctouT4vLm1DLi4-3fvlGmvgSwVlQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
