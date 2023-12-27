@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_pro/controller/task_controller.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
+import 'package:task_pro/view/base/custome_dialog.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 // import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -85,7 +87,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
           setState(() {
             loadingPercentage = 0;
           });
-          showMemberMenu();
+          // showMemberMenu();
         },
         onProgress: (progress) {
           setState(() {
@@ -179,60 +181,62 @@ class _WebviewScreenState extends State<WebviewScreen> {
       appBar: AppBar(
         backgroundColor: ThemeColors.whiteColor,
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            InkWell(
-              onTap: () {
-                showMemberMenu();
-              },
-              child: Row(
-                      children: [
-                        const Icon(Icons.info,color: ThemeColors.blackColor,),
-                        const SizedBox(width: 5.0,),
-                        Text("How to do?",
-                          style: GoogleFonts.inter(
-                              color: Colors.black,
-                              fontSize: Dimensions.fontSizeDefault,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-            ),
-          ],
-        ),
-        actions: [
-          InkWell(
-            onTap: ()async{
-              final capturedImage = await _screenshotController.capture();
+        title: InkWell(
+          onTap: ()async{
+            final capturedImage = await _screenshotController.capture();
+            if (kDebugMode) {
               print(capturedImage);
-              String imagePath = await Get.find<TaskController>().saveImage(capturedImage!,);
-              print(imagePath);
-              Navigator.pop(context, imagePath);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                height: 10,
-                decoration: const BoxDecoration(
+            }
+            // showDialog(
+            //     context: context,
+            //     builder: (BuildContext context) => UploadDialog(capturePath: capturedImage,));
+
+            String imagePath = await Get.find<TaskController>().saveImage(capturedImage!,);
+            print(imagePath);
+            Navigator.pop(context, imagePath);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Container(
+              height: 40,
+              width: MediaQuery.of(context).size.width/2.5,
+              decoration: const BoxDecoration(
                   color: ThemeColors.primaryColor,
                   borderRadius: BorderRadius.all(Radius.circular(10))
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Row(
-                    children: [
-                      Text("ScreenShot / Upload",
-                        style: GoogleFonts.inter(
-                            color: ThemeColors.whiteColor,
-                            fontSize: Dimensions.fontSizeDefault,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Center(
+                  child: Text("ScreenShot / Upload",
+                    style: GoogleFonts.inter(
+                        color: ThemeColors.whiteColor,
+                        fontSize: Dimensions.fontSizeDefault,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
             ),
-          )
+          ),
+        ),
+        actions: [
+          InkWell(
+            onTap: () {
+              showMemberMenu();
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.info,color: ThemeColors.blackColor,),
+                const SizedBox(width: 5.0,),
+                Text("How to do?",
+                  style: GoogleFonts.inter(
+                      color: Colors.black,
+                      fontSize: Dimensions.fontSizeDefault,
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10.0,),
         ],
       ),
       body: Screenshot(

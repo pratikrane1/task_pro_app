@@ -405,9 +405,11 @@ class _RewardsScreenState extends State<RewardsScreen> {
         color: ThemeColors.secondaryColor,
 
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
                 Padding(
@@ -415,6 +417,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                   child: Column(
                     children: [
                       Text("Total Completed Tasks".tr,
+                        textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
                           color: ThemeColors.whiteColor,
                           fontSize: Dimensions.fontSizeLarge,
@@ -437,7 +440,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                     width: 10,
                     child: VerticalDivider(indent: 8,color: ThemeColors.whiteColor,thickness: 1.5,)),
                 Padding(
-                  padding: const EdgeInsets.only(right: 50.0,top: 10.0),
+                  padding: const EdgeInsets.only(right: 50.0,top: 10.0,left: 15.0),
                   child: Column(
 
                     children: [

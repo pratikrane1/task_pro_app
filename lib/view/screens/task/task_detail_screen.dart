@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:task_pro/controller/rewards_controller.dart';
 import 'package:task_pro/controller/task_controller.dart';
 import 'package:task_pro/data/model/task_model.dart';
 import 'package:task_pro/util/dimensions.dart';
@@ -302,6 +303,48 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   //   ),
                   // ),
 
+                  _taskData!.screenShotRejectDes != null ? _taskData!.status != "Completed" ?
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      // color: ThemeColors.card3Color,
+                      border: Border.all(color: ThemeColors.redColor.withOpacity(0.4)),
+                      borderRadius: BorderRadius.circular(
+                          Dimensions.RADIUS_EXTRA_LARGE),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'reason_for_rejection'.tr,
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.inter(
+                              fontSize: Dimensions.fontSizeExtraLarge,
+                              fontWeight: FontWeight.w700,
+                              color: ThemeColors.blackColor,
+                            ),
+                          ),
+
+                          Text(
+                            '${_taskData!.screenShotRejectDes}'.tr,
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.inter(
+                              fontSize: Dimensions.fontSizeDefault,
+                              fontWeight: FontWeight.w400,
+                              color: ThemeColors.redColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ) : const SizedBox() : const SizedBox(),
+
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+
                   Container(
                     decoration: BoxDecoration(
                       // color: ThemeColors.card3Color,
@@ -342,7 +385,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                 ],
                               ),
 
-                              (_taskData!.completedAt == null) ?
+                        (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
                               const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
                             ],
                           ),
@@ -350,8 +393,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           const SizedBox(height: 10,),
 
                           ///Review
-                          (_taskData!.completedAt == null) ?
-                          Padding(
+                        (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                        _taskData!.task!.comments!.length != 0 ? Padding(
                             padding: const EdgeInsets.only(left: 0.0, right: 15.0),
                             child: Container(
                               decoration: BoxDecoration(
@@ -370,12 +413,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                 ),
                               ),
                             ),
-                          ):const SizedBox(),
+                          ) : const SizedBox()
+                            :const SizedBox(),
 
                           const SizedBox(height: 10,),
 
                           ///Copy text and Continue
-                          (_taskData!.completedAt == null) ?
+                          (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
                           Center(
                             child: Container(
                               height: 40,
@@ -415,6 +459,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                                       showCustomSnackBar(
                                                           'Task Submitted Successfully.'
                                                               .tr,isError: false);
+                                                      Get.find<RewardsController>().getTodaysPayoutData();
+                                                      Get.find<RewardsController>().getRewardsData("",);
+
                                                     } else {
                                                       showCustomSnackBar(
                                                           'Please upload screenshot.'
@@ -508,27 +555,17 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
                               Row(
                                 children: [
-                                  _taskData!.completedAt != null ?
-                                  _taskData!.verifiedAt == null ?
-                                  Text(
-                                    'In-Review'.tr,
+                                   Text(
+                                    '${_taskData!.status}'.tr,
                                     textAlign: TextAlign.start,
                                     style: GoogleFonts.inter(
                                       fontSize: Dimensions.fontSizeDefault,
                                       fontWeight: FontWeight.w500,
-                                      color: ThemeColors.redColor,
+                                      color: _taskData!.status == "Completed" ? ThemeColors.greenColor : ThemeColors.redColor,
                                     ),
-                                  ) : Text(
-                                    'Completed'.tr,
-                                    textAlign: TextAlign.start,
-                                    style: GoogleFonts.inter(
-                                      fontSize: Dimensions.fontSizeDefault,
-                                      fontWeight: FontWeight.w500,
-                                      color: ThemeColors.greenColor,
-                                    ),
-                                  ) : const SizedBox(),
+                                  ),
                                   const SizedBox(width: 10,),
-                                  (_taskData!.completedAt == null) ?
+                                  (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
                                   const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
                                 ],
                               ),
@@ -624,7 +661,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           const SizedBox(height: 10,),
 
                           ///Submit
-                          (_taskData!.completedAt == null) ?
+                          (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
                           Center(
                             child: Container(
                               height: 40,
@@ -632,13 +669,34 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                               padding: const EdgeInsets.only(left: 0.0, right: 10),
                               child: AppButton(
                                 onPressed: ()async {
-                                        if (taskController.pickedFile != null) {
-                                          await Get.find<TaskController>().uploadScreenShot(
-                                              _taskData!.id.toString());
-                                          await Get.find<TaskController>().getSpecificTask(widget.taskList!.id.toString());
-                                        }else{
-                                          showCustomSnackBar('Please upload screenshot.'.tr);
-                                        }
+                                  if(imagePath != null) {
+                                    if (taskController
+                                        .pickedFile !=
+                                        null) {
+                                      await Get.find<
+                                          TaskController>()
+                                          .uploadScreenShot(
+                                          _taskData!.id
+                                              .toString());
+                                      await Get.find<
+                                          TaskController>()
+                                          .getSpecificTask(
+                                          widget
+                                              .taskList!.id
+                                              .toString());
+                                      showCustomSnackBar(
+                                          'Task Submitted Successfully.'
+                                              .tr,isError: false);
+                                      Get.find<RewardsController>().getTodaysPayoutData();
+                                      Get.find<RewardsController>().getRewardsData("",);
+
+                                    } else {
+                                      showCustomSnackBar(
+                                          'Please upload screenshot.'
+                                              .tr);
+                                    }
+                                  }
+
                                 },
                                 shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(Radius.circular(50))),

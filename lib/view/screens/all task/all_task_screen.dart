@@ -88,9 +88,9 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                     int indesId = index + 1;
                     return InkWell(
                       onTap: () =>
-                      // (DateFormat("d\nMMMM").format(DateTime.parse(_allTaskList![index].assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())) ?
-                                    Get.to(()=>TaskScreen(assignTaskDate: _allTaskList![index].assignedAt.toString(),)),
-                          // : null,
+                      (DateFormat("d\nMMMM").format(DateTime.parse(_allTaskList![index].assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())) ?
+                                    Get.to(()=>TaskScreen(assignTaskDate: _allTaskList![index].assignedAt.toString(),))
+                          : null,
                       child: Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -148,12 +148,14 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
 
             ),
           )
-          : Text('No Task Available'.tr,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: Dimensions.fontSizeOverLarge,
-              fontWeight: FontWeight.w600,
-              color: ThemeColors.whiteColor,
+          : Center(
+            child: Text('No Task Available'.tr,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: Dimensions.fontSizeOverLarge,
+                fontWeight: FontWeight.w600,
+                color: ThemeColors.blackColor,
+              ),
             ),
           )
             : const Center(child: CircularProgressIndicator(color: ThemeColors.primaryColor,),) ;

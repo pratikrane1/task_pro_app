@@ -49,6 +49,7 @@ class _AllTaskWidgetState extends State<AllTaskWidget> {
             ),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0,right: 14.0,left: 15.0,bottom: 10.0),

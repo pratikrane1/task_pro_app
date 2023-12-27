@@ -65,5 +65,7 @@
   "image": "Image",
   "connection_to_api_server_failed": "Connection to api server failed",
   "upload_screenshot": "Submit Image",
-  "continue": "Continue"
+  "continue": "Continue",
+  "are_you_sure_you_want_to_upload" : "Are you sure you want to ScreenShot / Upload?",
+  "reason_for_rejection" : "Reason For Rejection"
 }

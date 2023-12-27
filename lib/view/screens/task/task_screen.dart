@@ -186,9 +186,10 @@ class _TaskScreenState extends State<TaskScreen> {
                             child: InkWell(
 
                               onTap: () =>
-                              (DateFormat("d\nMMMM").format(DateTime.parse(_taskList!.taskList![index].assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())) ?
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>TaskDetailScreen(taskId: indesId,taskList: _taskList!.taskList![index],)))
-                              : null,
+                              // (DateFormat("d\nMMMM").format(DateTime.parse(_taskList!.taskList![index].assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())) ?
+                              // (_taskList!.taskList![index].status != "Completed" && _taskList!.taskList![index].status != "Cancelled") ?
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>TaskDetailScreen(taskId: indesId,taskList: _taskList!.taskList![index],))),
+                                  // : null,
                                   // : null,
                               child: Card(
                                 // elevation: 4,
@@ -216,7 +217,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                       ),
                                     ),
                                     trailing:
-                                    (_taskList!.taskList![index].completedAt != null && _taskList!.taskList![index].verifiedAt != null) ?
+                                    (_taskList!.taskList![index].status == "Completed") ?
                                     Stack(
                                       children: [
                                         IconButton(

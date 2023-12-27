@@ -63,6 +63,7 @@ class TaskListModel {
   String? verifiedAt;
   String? completedAt;
   String? status;
+  String? screenShotRejectDes;
   Null? deletedAt;
   String? createdAt;
   String? updatedAt;
@@ -79,6 +80,7 @@ class TaskListModel {
         this.verifiedAt,
         this.completedAt,
         this.status,
+        this.screenShotRejectDes,
         this.deletedAt,
         this.createdAt,
         this.updatedAt,
@@ -95,6 +97,7 @@ class TaskListModel {
     verifiedAt = json['verified_at'];
     completedAt = json['completed_at'];
     status = json['status'];
+    screenShotRejectDes = json['screenshot_reject_note'];
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -113,6 +116,7 @@ class TaskListModel {
     data['verified_at'] = this.verifiedAt;
     data['completed_at'] = this.completedAt;
     data['status'] = this.status;
+    data['screenshot_reject_note'] = this.screenShotRejectDes;
     data['deleted_at'] = this.deletedAt;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
