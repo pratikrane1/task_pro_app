@@ -7,6 +7,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_compression_flutter/image_compression_flutter.dart';
+import 'package:task_pro/controller/profile_controller.dart';
+import 'package:task_pro/controller/rewards_controller.dart';
 import 'package:task_pro/data/api/api_checker.dart';
 import 'package:task_pro/data/model/all_task_model.dart';
 import 'package:task_pro/data/model/response_model.dart';
@@ -51,6 +53,19 @@ class TaskController extends GetxController implements GetxService{
   void initData() {
     _pickedFile = null;
     _rawFile = null;
+  }
+
+  Future autoAssignTask() async {
+
+    Response response = await taskRepo.autoAssignTask();
+    if (response.statusCode == 200) {
+      await Get.find<TaskController>().getAllTask("");
+      await Get.find<ProfileController>().getProfileData();
+      await Get.find<RewardsController>().getTodaysPayoutData();
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
   }
 
   Future<TaskListModel> getSpecificTask(String taskId) async {

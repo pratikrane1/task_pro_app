@@ -8,6 +8,11 @@ class TaskRepo extends GetxService {
   final ApiClient apiClient;
   TaskRepo({required this.apiClient});
 
+  Future<Response> autoAssignTask() async {
+    return await apiClient
+        .postData(AppConstants.AUTO_ASSIGN_TASK,{});
+  }
+
   Future<Response> getSpecificTask(String taskId) async {
     return await apiClient
         .getData(AppConstants.SPECIFIC_TASK+"/$taskId",);

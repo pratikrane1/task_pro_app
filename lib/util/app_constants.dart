@@ -14,6 +14,7 @@ class AppConstants {
   static const String LOGIN = '/login';
   static const String VERIFY_SMS_OTP = '/otp_verification';
   static const String TASK_LIST = '/show-all-assign-task';
+  static const String AUTO_ASSIGN_TASK = '/assign-automate-task';
   static const String SPECIFIC_TASK = '/show-selective-assign-task';
   static const String ALL_TASK_LIST = '/show-all-assign-task-datewise';
   static const String UPLOAD_SCREENSHOT = '/verify-assign-task';

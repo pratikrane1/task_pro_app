@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    Get.find<TaskController>().autoAssignTask();
     Get.find<TaskController>().getAllTask("");
     Get.find<ProfileController>().getProfileData();
   }
