@@ -38,7 +38,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
   void initState() {
     super.initState();
     // if (Platform.isAndroid) WebViewController.fromPlatform(platform) = WebViewController();
-
+    _inAppWebViewController;
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
@@ -63,7 +63,6 @@ class _WebviewScreenState extends State<WebviewScreen> {
         },
       ))
       ..loadRequest(
-
         Uri.parse(widget.url),
       );
   }
@@ -135,6 +134,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
     });
   }
 
+  Uint8List?  capturedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
         title: InkWell(
           onTap: ()async{
             // final capturedImage = await _screenshotController.capture();
-            Uint8List?  capturedImage = await _inAppWebViewController!.takeScreenshot();
+            // capturedImage = await _inAppWebViewController!.takeScreenshot();
             if (kDebugMode) {
               print(capturedImage);
             }
@@ -214,12 +214,15 @@ class _WebviewScreenState extends State<WebviewScreen> {
                 initialUserScripts: UnmodifiableListView<UserScript>([]),
                 // pullToRefreshController: pullToRefreshController,
                 onWebViewCreated: (controller) async {
-                  _inAppWebViewController!.takeScreenshot();
+                  // _inAppWebViewController!.takeScreenshot();
                 },
                 onLoadStart: (controller, url) async {
                   setState(() {
                     loadingPercentage = 0;
                   });
+                },
+                onScrollChanged: (controller,a,b)async{
+                  capturedImage = await controller.takeScreenshot();
                 },
                 shouldOverrideUrlLoading:
                     (controller, navigationAction) async {
@@ -228,14 +231,15 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   return NavigationActionPolicy.ALLOW;
                 },
                 onLoadStop: (controller, url) async {
+                  capturedImage = await controller.takeScreenshot();
                   pullToRefreshController?.endRefreshing();
+                  capturedImage = await controller.takeScreenshot();
                   setState(() {
                     loadingPercentage = 100;
                   });
                 },
                 onProgressChanged: (controller, progress) {
-                  if (progress == 100) {
-                                  }
+                  if (progress == 100) {}
                   setState(() {
                     loadingPercentage = progress;
                   });
