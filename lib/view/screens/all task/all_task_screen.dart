@@ -88,9 +88,9 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                     int indesId = index + 1;
                     return InkWell(
                       onTap: () =>
-                      (DateFormat("d\nMMMM").format(DateTime.parse(_allTaskList![index].assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())) ?
-                                    Get.to(()=>TaskScreen(assignTaskDate: _allTaskList![index].assignedAt.toString(),))
-                          : null,
+                      // (DateFormat("d\nMMMM").format(DateTime.parse(_allTaskList![index].assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())) ?
+                                    Get.to(()=>TaskScreen(assignTaskDate: _allTaskList![index].assignedAt.toString(),)),
+                          // : null,
                       child: Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -113,7 +113,8 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                                   fontSize: Dimensions.fontSizeDefault,
                                   fontWeight: FontWeight.w500,
                                 ),
-                              ) : Text( "Closed",
+                              ) :
+                              Text( "Closed",
                                 style: GoogleFonts.inter(
                                   color: ThemeColors.redColor,
                                   fontSize: Dimensions.fontSizeDefault,
@@ -124,7 +125,8 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                               (DateFormat("d\nMMMM").format(DateTime.parse(_allTaskList![index].assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())) ?
                               const Icon(Icons.electric_bolt,
                                 color: ThemeColors.orangeColor,
-                                size: 15,):  const Icon(Icons.lock_outline_sharp,
+                                size: 15,) :
+                              const Icon(Icons.lock_outline_sharp,
                                 color: ThemeColors.redColor,
                                 size: 15,)
                             ],

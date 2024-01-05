@@ -19,7 +19,7 @@ class AllTaskEmptyWidget extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         // padding: const EdgeInsets.only(
         //     top: 10, bottom: 15, left: 0, right: 10),
-        itemCount: 3,
+        itemCount: 1,
         itemBuilder: (context, index,) {
           return InkWell(
               onTap: () {},

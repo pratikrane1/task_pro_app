@@ -14,6 +14,7 @@ import 'package:task_pro/view/base/custom_snackbar.dart';
 import 'package:task_pro/view/base/custome_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:task_pro/view/base/image_widget.dart';
+import 'package:task_pro/view/screens/task/video_screen.dart';
 import 'package:task_pro/view/screens/task/webview_screen.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -160,19 +161,6 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       body: GetBuilder<TaskController>(builder: (taskController) {
         _taskData = taskController.taskData;
         _isLoading = taskController.isSpecificTaskLoading;
-        // WidgetsBinding.instance.addPostFrameCallback((_){
-        //
-        //   if(taskController.pickedFile != null)
-        //   {
-        //     setState(() {
-        //       imagePath = taskController.pickedFile!.path
-        //           .split("/")
-        //           .last
-        //           .toString();
-        //     });
-        //   }
-        // });
-
         return _isLoading ? _taskData != null ? RefreshIndicator(
           onRefresh: () async {
             await Get.find<TaskController>().getSpecificTask(widget.taskList!.id.toString());
@@ -182,7 +170,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Column(
+              child:
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -195,115 +184,72 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     ),
                   ),
 
-                  // Text(
-                  //   _taskData!.task!.description ?? "",
-                  //   // textAlign: TextAlign.center,
-                  //   style: GoogleFonts.inter(
-                  //     fontSize: Dimensions.fontSizeLarge,
-                  //     fontWeight: FontWeight.w400,
-                  //     color: ThemeColors.greyTextColor,
-                  //   ),
-                  // ),
-
                   const SizedBox(
                     height: 15.0,
                   ),
 
 
-                  Container(
-                    width: MediaQuery.of(context).size.width/4,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: ThemeColors.card3Color,
-                      borderRadius: BorderRadius.circular(
-                          Dimensions.RADIUS_EXTRA_LARGE),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text("${'task'.tr} #${widget.taskId}",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.inter(
-                            fontSize: Dimensions.fontSizeLarge,
-                            fontWeight: FontWeight.w600,
-                            color: ThemeColors.blackColor,
+                  ///Task Number and How to do?
+                  Row(
+                    children: [
+                      ///Task Number
+                      Container(
+                        width: MediaQuery.of(context).size.width/4,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: ThemeColors.card3Color,
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.RADIUS_EXTRA_LARGE),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text("${'task'.tr} #${widget.taskId}",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.inter(
+                                fontSize: Dimensions.fontSizeLarge,
+                                fontWeight: FontWeight.w600,
+                                color: ThemeColors.blackColor,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      const SizedBox(width: 8.0,),
+                      ///How to do?
+                      InkWell(
+                                onTap: () => Get.to(()=>VideoScreen(videoData: _taskData!.howToVideo!,)),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width/3,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: ThemeColors.greyTextColor.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.RADIUS_EXTRA_LARGE),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Text("How to do?",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeLarge,
+                                          fontWeight: FontWeight.w600,
+                                          color: ThemeColors.blackColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                    ],
                   ),
 
                   const SizedBox(
                     height: 15.0,
                   ),
 
-                  // Card(
-                  //   // elevation: 4,
-                  //   shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(10),
-                  //       side: BorderSide(
-                  //         color: Colors.grey.withOpacity(0.4),
-                  //       )),
-                  //   child: ListTile(
-                  //     title: Text(
-                  //       "Status",
-                  //       style: GoogleFonts.inter(
-                  //         fontSize: Dimensions.fontSizeDefault,
-                  //         fontWeight: FontWeight.w600,
-                  //       ),
-                  //     ),
-                  //     subtitle: Row(
-                  //       children: [
-                  //         (_taskData!.verifiedAt == null &&
-                  //             _taskData!.completedAt == null)
-                  //             ? const SizedBox.shrink()
-                  //             : _taskData!.verifiedAt == null
-                  //             ? Text(
-                  //           "In-Process",
-                  //           style: GoogleFonts.inter(
-                  //               fontSize:
-                  //               Dimensions.fontSizeSmall,
-                  //               fontWeight: FontWeight.w600,
-                  //               color: ThemeColors.redColor),
-                  //         )
-                  //             : Text(
-                  //           "Approved",
-                  //           style: GoogleFonts.inter(
-                  //               fontSize:
-                  //               Dimensions.fontSizeSmall,
-                  //               fontWeight: FontWeight.w600,
-                  //               color: ThemeColors.greenColor),
-                  //         ),
-                  //
-                  //       ],
-                  //     ),
-                  //
-                  //     trailing: Stack(
-                  //       children: [
-                  //         IconButton(
-                  //           onPressed: () {},
-                  //           icon: const Icon(
-                  //             Icons.circle_outlined,
-                  //             color: ThemeColors.card2Color,
-                  //             size: 20,
-                  //           ),
-                  //         ),
-                  //         // _taskData!.status == "Completed"
-                  //         _taskData!.verifiedAt != null
-                  //             ? const Positioned(
-                  //                 top: 10,
-                  //                 right: 10,
-                  //                 child: Icon(
-                  //                   Icons.check,
-                  //                   color: ThemeColors.blackColor,
-                  //                 ))
-                  //             : const SizedBox(),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-
-                  _taskData!.screenShotRejectDes != null ? _taskData!.status != "Completed" ?
+                  _taskData!.screenShotRejectDes != null ? (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
                   Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -345,467 +291,1387 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     height: 15.0,
                   ),
 
-                  Container(
-                    decoration: BoxDecoration(
-                      // color: ThemeColors.card3Color,
-                      border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
-                      borderRadius: BorderRadius.circular(
-                          Dimensions.RADIUS_EXTRA_LARGE),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ///Step 1 and check uncheck button
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  _taskData!.task!.taskType == "Business Pages" ?
+                  ///Google Business page review
+                  Column(
+                    children: [
+                      ///Step 1 and check uncheck button
+                      Container(
+                        decoration: BoxDecoration(
+                          // color: ThemeColors.card3Color,
+                          border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.RADIUS_EXTRA_LARGE),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment : CrossAxisAlignment.start,
+                              ///Step 1 and check uncheck button
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Step 1'.tr,
-                                    textAlign: TextAlign.start,
-                                    style: GoogleFonts.inter(
-                                      fontSize: Dimensions.fontSizeExtraLarge,
-                                      fontWeight: FontWeight.w700,
-                                      color: ThemeColors.blackColor,
-                                    ),
+                                  Column(
+                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Step 1'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeExtraLarge,
+                                          fontWeight: FontWeight.w700,
+                                          color: ThemeColors.blackColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        'add_review'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeDefault,
+                                          fontWeight: FontWeight.w400,
+                                          color: ThemeColors.blackColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'add_review'.tr,
-                                    textAlign: TextAlign.start,
-                                    style: GoogleFonts.inter(
-                                      fontSize: Dimensions.fontSizeDefault,
-                                      fontWeight: FontWeight.w400,
-                                      color: ThemeColors.blackColor,
-                                    ),
-                                  ),
+
+                            (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                                  const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
                                 ],
                               ),
 
-                        (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
-                              const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+                              const SizedBox(height: 10,),
+
+                              ///Review
+                              if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                            (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                            _taskData!.task!.comments!.length != 0 ? Padding(
+                                padding: const EdgeInsets.only(left: 0.0, right: 15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 0.5, color: ThemeColors.greyTextColor),
+                                      borderRadius:
+                                      const BorderRadius.all(Radius.circular(10))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      _taskData!.task!.comments![0].comment ?? "",
+                                      style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeDefault,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF6C748F)),
+                                    ),
+                                  ),
+                                ),
+                              ) : const SizedBox()
+                                :const SizedBox(),
+
+                              const SizedBox(height: 10,),
+
+                              ///Copy text and Continue
+                              if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                              Center(
+                                child: Container(
+                                  height: 40,
+                                  width: MediaQuery.of(context).size.width/1.8,
+                                  padding: const EdgeInsets.only(left: 0.0, right: 10),
+                                  child: AppButton(
+                                    onPressed: () async{
+                                      Clipboard.setData(ClipboardData(
+                                          text: _taskData!.task!.comments![0].comment ?? ""))
+                                          .then((_) {
+                                        showCustomSnackBar('Review Text Copied.',
+                                            isError: false);
+                                      });
+
+                                      // Get.to(()=>VideoScreen());
+
+
+                                      // imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: "https://youtu.be/aPmohMs9mrQ",)));
+                                      imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: _taskData!.task!.url.toString(),howToDoText: _taskData!.howToVideo!.howToDo!,isYoutube : _taskData!.task!.taskType == "Youtube Video" ? true : false)));
+                                      if(imagePath != null) {
+                                                        if (taskController
+                                                                .pickedFile !=
+                                                            null) {
+                                                          await Get.find<
+                                                                  TaskController>()
+                                                              .uploadScreenShot(
+                                                                  _taskData!.id
+                                                                      .toString());
+                                                          await Get.find<
+                                                                  TaskController>()
+                                                              .getSpecificTask(
+                                                                  widget
+                                                                      .taskList!.id
+                                                                      .toString());
+                                                          showCustomSnackBar(
+                                                              'Task Submitted Successfully.'
+                                                                  .tr,isError: false);
+                                                          Get.find<RewardsController>().getTodaysPayoutData();
+                                                          Get.find<RewardsController>().getRewardsData("",);
+
+                                                        } else {
+                                                          showCustomSnackBar(
+                                                              'Please upload screenshot.'
+                                                                  .tr);
+                                                        }
+                                                      }
+                                                      setState(() {
+                                        imagePath;
+                                      });
+                                    },
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(50))),
+                                    icon: const Icon(
+                                      Icons.copy,
+                                      size: 15,
+                                    ),
+                                    text: Text("${'copy_text'.tr} / ${'continue'.tr}",
+                                      style: GoogleFonts.inter(
+                                          color: Colors.white,
+                                          fontSize: Dimensions.fontSizeDefault,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    // loading: login is LoginLoading,
+                                    loading: true,
+                                    color: ThemeColors.whiteColor,
+                                    textColor: ThemeColors.whiteColor,
+                                    style: ElevatedButton.styleFrom(
+                                      side: const BorderSide(
+                                          color: ThemeColors.primaryColor, width: 1),
+                                      backgroundColor: ThemeColors.primaryColor,
+                                      // color:Colors.red,
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                                    ),
+                                  ),
+                                ),
+                              ) : const SizedBox(),
+
+
                             ],
                           ),
-
-                          const SizedBox(height: 10,),
-
-                          ///Review
-                        (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
-                        _taskData!.task!.comments!.length != 0 ? Padding(
-                            padding: const EdgeInsets.only(left: 0.0, right: 15.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 0.5, color: ThemeColors.greyTextColor),
-                                  borderRadius:
-                                  const BorderRadius.all(Radius.circular(10))),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  _taskData!.task!.comments![0].comment ?? "",
-                                  style: GoogleFonts.inter(
-                                      fontSize: Dimensions.fontSizeDefault,
-                                      fontWeight: FontWeight.w500,
-                                      color: const Color(0xFF6C748F)),
-                                ),
-                              ),
-                            ),
-                          ) : const SizedBox()
-                            :const SizedBox(),
-
-                          const SizedBox(height: 10,),
-
-                          ///Copy text and Continue
-                          (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
-                          Center(
-                            child: Container(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width/1.8,
-                              padding: const EdgeInsets.only(left: 0.0, right: 10),
-                              child: AppButton(
-                                onPressed: () async{
-                                  Clipboard.setData(ClipboardData(
-                                      text: _taskData!.task!.comments![0].comment ?? ""))
-                                      .then((_) {
-                                    showCustomSnackBar('Review Text Copied.',
-                                        isError: false);
-                                  });
-
-                                  // openUrl(_taskData!.task!.url.toString());
-                                  // openUrl("https://g.page/r/CcM2nPzaehd_EAI/review");
-                                  // openUrl("https://play.google.com/store/apps/details?id=com.destek.proapp&pcampaignid=web_share");
-
-
-                                  // Get.to(()=> const WebviewScreen());
-                                  imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: _taskData!.task!.url.toString(),)));
-                                  if(imagePath != null) {
-                                                    if (taskController
-                                                            .pickedFile !=
-                                                        null) {
-                                                      await Get.find<
-                                                              TaskController>()
-                                                          .uploadScreenShot(
-                                                              _taskData!.id
-                                                                  .toString());
-                                                      await Get.find<
-                                                              TaskController>()
-                                                          .getSpecificTask(
-                                                              widget
-                                                                  .taskList!.id
-                                                                  .toString());
-                                                      showCustomSnackBar(
-                                                          'Task Submitted Successfully.'
-                                                              .tr,isError: false);
-                                                      Get.find<RewardsController>().getTodaysPayoutData();
-                                                      Get.find<RewardsController>().getRewardsData("",);
-
-                                                    } else {
-                                                      showCustomSnackBar(
-                                                          'Please upload screenshot.'
-                                                              .tr);
-                                                    }
-                                                  }
-                                                  setState(() {
-                                    imagePath;
-                                  });
-                                },
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(50))),
-                                icon: const Icon(
-                                  Icons.copy,
-                                  size: 15,
-                                ),
-                                text: Text("${'copy_text'.tr} / ${'continue'.tr}",
-                                  style: GoogleFonts.inter(
-                                      color: Colors.white,
-                                      fontSize: Dimensions.fontSizeDefault,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                // loading: login is LoginLoading,
-                                loading: true,
-                                color: ThemeColors.whiteColor,
-                                textColor: ThemeColors.whiteColor,
-                                style: ElevatedButton.styleFrom(
-                                  side: const BorderSide(
-                                      color: ThemeColors.primaryColor, width: 1),
-                                  backgroundColor: ThemeColors.primaryColor,
-                                  // color:Colors.red,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(30))),
-                                ),
-                              ),
-                            ),
-                          ) : const SizedBox(),
-
-
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
 
-                  const SizedBox(
-                    height: 15.0,
-                  ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
 
-
-
-                  ///Step 2 and submit image
-                  Container(
-                    decoration: BoxDecoration(
-                      // color: ThemeColors.card3Color,
-                      border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
-                      borderRadius: BorderRadius.circular(
-                          Dimensions.RADIUS_EXTRA_LARGE),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ///Step 2 and check uncheck button
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ///Step 2 and submit image
+                      Container(
+                        decoration: BoxDecoration(
+                          // color: ThemeColors.card3Color,
+                          border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.RADIUS_EXTRA_LARGE),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment : CrossAxisAlignment.start,
+                              ///Step 2 and check uncheck button
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Step 2'.tr,
-                                    textAlign: TextAlign.start,
-                                    style: GoogleFonts.inter(
-                                      fontSize: Dimensions.fontSizeExtraLarge,
-                                      fontWeight: FontWeight.w700,
-                                      color: ThemeColors.blackColor,
-                                    ),
+                                  Column(
+                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Step 2'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeExtraLarge,
+                                          fontWeight: FontWeight.w700,
+                                          color: ThemeColors.blackColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Add ScreenShot'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeDefault,
+                                          fontWeight: FontWeight.w400,
+                                          color: ThemeColors.blackColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'Add ScreenShot'.tr,
-                                    textAlign: TextAlign.start,
-                                    style: GoogleFonts.inter(
-                                      fontSize: Dimensions.fontSizeDefault,
-                                      fontWeight: FontWeight.w400,
-                                      color: ThemeColors.blackColor,
-                                    ),
+
+                                  Row(
+                                    children: [
+                                       Text(
+                                        '${_taskData!.status}'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeDefault,
+                                          fontWeight: FontWeight.w500,
+                                          color: _taskData!.status == "Completed" ? ThemeColors.greenColor : ThemeColors.redColor,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10,),
+                                      (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                                      const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+                                    ],
                                   ),
                                 ],
                               ),
 
-                              Row(
-                                children: [
-                                   Text(
-                                    '${_taskData!.status}'.tr,
-                                    textAlign: TextAlign.start,
+                              const SizedBox(height: 10,),
+
+                              const Divider(thickness: 1),
+
+                              const SizedBox(height: 5,),
+
+                              if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                (_taskData!.completedAt == null) ?
+                              Text(
+                                'after_completion_of_task_kindly_upload_screenshot'.tr,
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.inter(
+                                  fontSize: Dimensions.fontSizeDefault,
+                                  fontWeight: FontWeight.w400,
+                                  color: ThemeColors.blackColor,
+                                ),
+                              ):const SizedBox(),
+
+                              const SizedBox(height: 5,),
+
+                              Card(
+                                // elevation: 4,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side: BorderSide(
+                                      color: Colors.grey.withOpacity(0.4),
+                                    )),
+                                child: ListTile(
+                                  minLeadingWidth: 0,
+                                  leading: const Icon(
+                                    Icons.image_outlined,
+                                    color: Colors.blue,
+                                  ),
+                                  title: imagePath != null
+                                      ? Text(
+                                    imagePath!.split("/")
+                                              .last
+                                              .toString() ?? "",
+                                    maxLines: imagePath!.split("/")
+                                        .last
+                                        .toString()
+                                        .length ?? 0 ,
                                     style: GoogleFonts.inter(
                                       fontSize: Dimensions.fontSizeDefault,
-                                      fontWeight: FontWeight.w500,
-                                      color: _taskData!.status == "Completed" ? ThemeColors.greenColor : ThemeColors.redColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                      : Text(
+                                    "Image",
+                                    style: GoogleFonts.inter(
+                                      fontSize: Dimensions.fontSizeDefault,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  const SizedBox(width: 10,),
+                                  trailing: Wrap(
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    // spacing: 12,
+                                    children: [
+                                      _taskData!.verifyImageUrl != null ?
+                                      InkWell(
+                                        onTap: (){
+                                          Get.to(()=>ImageViewWidget(imageUrl: _taskData!.verifyImageUrl!,));
+                                        },
+                                        child: const Icon(
+                                          Icons.remove_red_eye,
+                                          color: ThemeColors.blackColor,
+                                          size: 20,
+                                        ),
+                                      ) : const SizedBox(),
+                                      if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                        _taskData!.completedAt == null
+                                          ? IconButton(
+                                        onPressed: () {
+                                          Get.find<TaskController>().pickGalleryImage(
+                                              _taskData!.taskId.toString());
+                                        },
+                                        icon: SvgPicture.asset(
+                                          Images.download_icon,
+                                          color: ThemeColors.blackColor,
+                                          // size: 20,
+                                        ),
+                                      )
+                                          : const SizedBox(),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(height: 10,),
+
+                              ///Submit
+                              if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                              Center(
+                                child: Container(
+                                  height: 40,
+                                  width: MediaQuery.of(context).size.width/1.8,
+                                  padding: const EdgeInsets.only(left: 0.0, right: 10),
+                                  child: AppButton(
+                                    onPressed: ()async {
+                                      if(imagePath != null) {
+                                        if (taskController
+                                            .pickedFile !=
+                                            null) {
+                                          await Get.find<
+                                              TaskController>()
+                                              .uploadScreenShot(
+                                              _taskData!.id
+                                                  .toString());
+                                          await Get.find<
+                                              TaskController>()
+                                              .getSpecificTask(
+                                              widget
+                                                  .taskList!.id
+                                                  .toString());
+                                          showCustomSnackBar(
+                                              'Task Submitted Successfully.'
+                                                  .tr,isError: false);
+                                          Get.find<RewardsController>().getTodaysPayoutData();
+                                          Get.find<RewardsController>().getRewardsData("",);
+
+                                        } else {
+                                          showCustomSnackBar(
+                                              'Please upload screenshot.'
+                                                  .tr);
+                                        }
+                                      }
+
+                                    },
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(50))),
+                                    icon: const Icon(
+                                      Icons.copy,
+                                      size: 15,
+                                    ),
+                                    text: Text("${'submit'.tr}",
+                                      style: GoogleFonts.inter(
+                                          color: Colors.white,
+                                          fontSize: Dimensions.fontSizeDefault,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    // loading: login is LoginLoading,
+                                    loading: true,
+                                    color: ThemeColors.whiteColor,
+                                    textColor: ThemeColors.whiteColor,
+                                    style: ElevatedButton.styleFrom(
+                                      side: const BorderSide(
+                                          color: ThemeColors.primaryColor, width: 1),
+                                      backgroundColor: ThemeColors.primaryColor,
+                                      // color:Colors.red,
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                                    ),
+                                  ),
+                                ),
+                              ) : const SizedBox(),
+
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ) : const SizedBox(),
+
+                  _taskData!.task!.taskType == "Youtube Video" ?
+                  ///Youtube Steps
+                  Column(
+                    children: [
+                      ///Step 1 and check uncheck button
+                      Container(
+                        decoration: BoxDecoration(
+                          // color: ThemeColors.card3Color,
+                          border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.RADIUS_EXTRA_LARGE),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ///Step 1 and check uncheck button
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Step 1'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeExtraLarge,
+                                          fontWeight: FontWeight.w700,
+                                          color: ThemeColors.blackColor,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width/1.5,
+                                        child: Text(
+                                          'Watch complete video, Like video and Subscribe video.'.tr,
+                                          textAlign: TextAlign.start,
+                                          style: GoogleFonts.inter(
+                                            fontSize: Dimensions.fontSizeDefault,
+                                            fontWeight: FontWeight.w400,
+                                            color: ThemeColors.blackColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
                                   (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
                                   const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
                                 ],
                               ),
+
+                              const SizedBox(height: 10,),
+
+                              /// Continue button
+                              if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                                Center(
+                                  child: Container(
+                                    height: 40,
+                                    width: MediaQuery.of(context).size.width/1.8,
+                                    padding: const EdgeInsets.only(left: 0.0, right: 10),
+                                    child: AppButton(
+                                      onPressed: () async{
+
+
+                                        // imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: "https://youtu.be/aPmohMs9mrQ",)));
+                                        imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: _taskData!.task!.url.toString(),howToDoText: _taskData!.howToVideo!.howToDo!,isYoutube : _taskData!.task!.taskType == "Youtube Video" ? true : false)));
+                                        if(imagePath != null) {
+                                          if (taskController
+                                              .pickedFile !=
+                                              null) {
+                                            await Get.find<
+                                                TaskController>()
+                                                .uploadScreenShot(
+                                                _taskData!.id
+                                                    .toString());
+                                            await Get.find<
+                                                TaskController>()
+                                                .getSpecificTask(
+                                                widget
+                                                    .taskList!.id
+                                                    .toString());
+                                            showCustomSnackBar(
+                                                'Task Submitted Successfully.'
+                                                    .tr,isError: false);
+                                            Get.find<RewardsController>().getTodaysPayoutData();
+                                            Get.find<RewardsController>().getRewardsData("",);
+
+                                          } else {
+                                            showCustomSnackBar(
+                                                'Please upload screenshot.'
+                                                    .tr);
+                                          }
+                                        }
+                                        setState(() {
+                                          imagePath;
+                                        });
+                                      },
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                                      text: Text("${'continue'.tr}",
+                                        style: GoogleFonts.inter(
+                                            color: Colors.white,
+                                            fontSize: Dimensions.fontSizeDefault,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      // loading: login is LoginLoading,
+                                      loading: true,
+                                      color: ThemeColors.whiteColor,
+                                      textColor: ThemeColors.whiteColor,
+                                      style: ElevatedButton.styleFrom(
+                                        side: const BorderSide(
+                                            color: ThemeColors.primaryColor, width: 1),
+                                        backgroundColor: ThemeColors.primaryColor,
+                                        // color:Colors.red,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(30))),
+                                      ),
+                                    ),
+                                  ),
+                                ) : const SizedBox(),
+
+
                             ],
                           ),
+                        ),
+                      ),
 
-                          const SizedBox(height: 10,),
-
-                          const Divider(thickness: 1),
-
-                          const SizedBox(height: 5,),
-
-                          (_taskData!.completedAt == null) ?
-                          Text(
-                            'after_completion_of_task_kindly_upload_screenshot'.tr,
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.inter(
-                              fontSize: Dimensions.fontSizeDefault,
-                              fontWeight: FontWeight.w400,
-                              color: ThemeColors.blackColor,
-                            ),
-                          ):const SizedBox(),
-
-                          const SizedBox(height: 5,),
-
-                          Card(
-                            // elevation: 4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                side: BorderSide(
-                                  color: Colors.grey.withOpacity(0.4),
-                                )),
-                            child: ListTile(
-                              minLeadingWidth: 0,
-                              leading: const Icon(
-                                Icons.image_outlined,
-                                color: Colors.blue,
-                              ),
-                              title: imagePath != null
-                                  ? Text(
-                                imagePath!.split("/")
-                                          .last
-                                          .toString() ?? "",
-                                maxLines: imagePath!.split("/")
-                                    .last
-                                    .toString()
-                                    .length ?? 0 ,
-                                style: GoogleFonts.inter(
-                                  fontSize: Dimensions.fontSizeDefault,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              )
-                                  : Text(
-                                "Image",
-                                style: GoogleFonts.inter(
-                                  fontSize: Dimensions.fontSizeDefault,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              trailing: Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                // spacing: 12,
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      
+                      ///Step 2 
+                      Container(
+                        decoration: BoxDecoration(
+                          // color: ThemeColors.card3Color,
+                          border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.RADIUS_EXTRA_LARGE),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ///Step 2 and check uncheck button
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  _taskData!.verifyImageUrl != null ?
-                                  InkWell(
-                                    onTap: (){
-                                      Get.to(()=>ImageViewWidget(imageUrl: _taskData!.verifyImageUrl!,));
-                                    },
-                                    child: const Icon(
-                                      Icons.remove_red_eye,
-                                      color: ThemeColors.blackColor,
-                                      size: 20,
-                                    ),
-                                  ) : const SizedBox(),
-                                  _taskData!.completedAt == null
-                                      ? IconButton(
-                                    onPressed: () {
-                                      Get.find<TaskController>().pickGalleryImage(
-                                          _taskData!.taskId.toString());
-                                    },
-                                    icon: SvgPicture.asset(
-                                      Images.download_icon,
-                                      color: ThemeColors.blackColor,
-                                      // size: 20,
-                                    ),
-                                  )
-                                      : const SizedBox(),
+                                  Column(
+                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Step 2'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeExtraLarge,
+                                          fontWeight: FontWeight.w700,
+                                          color: ThemeColors.blackColor,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width/2,
+                                        child: Text(
+                                          'Add ScreenShot'.tr,
+                                          textAlign: TextAlign.start,
+                                          maxLines: 2,
+                                          style: GoogleFonts.inter(
+                                            fontSize: Dimensions.fontSizeDefault,
+                                            fontWeight: FontWeight.w400,
+                                            color: ThemeColors.blackColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '${_taskData!.status}'.tr,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.inter(
+                                          fontSize: Dimensions.fontSizeDefault,
+                                          fontWeight: FontWeight.w500,
+                                          color: _taskData!.status == "Completed" ? ThemeColors.greenColor : ThemeColors.redColor,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10,),
+                                      (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                                      const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ),
-                          ),
 
-                          const SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
 
-                          ///Submit
-                          (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
-                          Center(
-                            child: Container(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width/1.8,
-                              padding: const EdgeInsets.only(left: 0.0, right: 10),
-                              child: AppButton(
-                                onPressed: ()async {
-                                  if(imagePath != null) {
-                                    if (taskController
-                                        .pickedFile !=
-                                        null) {
-                                      await Get.find<
-                                          TaskController>()
-                                          .uploadScreenShot(
-                                          _taskData!.id
-                                              .toString());
-                                      await Get.find<
-                                          TaskController>()
-                                          .getSpecificTask(
-                                          widget
-                                              .taskList!.id
-                                              .toString());
-                                      showCustomSnackBar(
-                                          'Task Submitted Successfully.'
-                                              .tr,isError: false);
-                                      Get.find<RewardsController>().getTodaysPayoutData();
-                                      Get.find<RewardsController>().getRewardsData("",);
+                              const Divider(thickness: 1),
 
-                                    } else {
-                                      showCustomSnackBar(
-                                          'Please upload screenshot.'
-                                              .tr);
-                                    }
-                                  }
+                              const SizedBox(height: 5,),
 
-                                },
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(50))),
-                                icon: const Icon(
-                                  Icons.copy,
-                                  size: 15,
-                                ),
-                                text: Text("${'submit'.tr}",
+                              if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                (_taskData!.completedAt == null) ?
+                                Text(
+                                  'after_completion_of_task_kindly_upload_screenshot'.tr,
+                                  textAlign: TextAlign.start,
                                   style: GoogleFonts.inter(
-                                      color: Colors.white,
+                                    fontSize: Dimensions.fontSizeDefault,
+                                    fontWeight: FontWeight.w400,
+                                    color: ThemeColors.blackColor,
+                                  ),
+                                ):const SizedBox(),
+
+                              const SizedBox(height: 5,),
+
+                              Card(
+                                // elevation: 4,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side: BorderSide(
+                                      color: Colors.grey.withOpacity(0.4),
+                                    )),
+                                child: ListTile(
+                                  minLeadingWidth: 0,
+                                  leading: const Icon(
+                                    Icons.image_outlined,
+                                    color: Colors.blue,
+                                  ),
+                                  title: imagePath != null
+                                      ? Text(
+                                    imagePath!.split("/")
+                                        .last
+                                        .toString() ?? "",
+                                    maxLines: imagePath!.split("/")
+                                        .last
+                                        .toString()
+                                        .length ?? 0 ,
+                                    style: GoogleFonts.inter(
                                       fontSize: Dimensions.fontSizeDefault,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                // loading: login is LoginLoading,
-                                loading: true,
-                                color: ThemeColors.whiteColor,
-                                textColor: ThemeColors.whiteColor,
-                                style: ElevatedButton.styleFrom(
-                                  side: const BorderSide(
-                                      color: ThemeColors.primaryColor, width: 1),
-                                  backgroundColor: ThemeColors.primaryColor,
-                                  // color:Colors.red,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                      : Text(
+                                    "Image",
+                                    style: GoogleFonts.inter(
+                                      fontSize: Dimensions.fontSizeDefault,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  trailing: Wrap(
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    // spacing: 12,
+                                    children: [
+                                      _taskData!.verifyImageUrl != null ?
+                                      InkWell(
+                                        onTap: (){
+                                          Get.to(()=>ImageViewWidget(imageUrl: _taskData!.verifyImageUrl!,));
+                                        },
+                                        child: const Icon(
+                                          Icons.remove_red_eye,
+                                          color: ThemeColors.blackColor,
+                                          size: 20,
+                                        ),
+                                      ) : const SizedBox(),
+                                      if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                        _taskData!.completedAt == null
+                                            ? IconButton(
+                                          onPressed: () {
+                                            Get.find<TaskController>().pickGalleryImage(
+                                                _taskData!.taskId.toString());
+                                          },
+                                          icon: SvgPicture.asset(
+                                            Images.download_icon,
+                                            color: ThemeColors.blackColor,
+                                            // size: 20,
+                                          ),
+                                        )
+                                            : const SizedBox(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ) : const SizedBox(),
+
+                              const SizedBox(height: 10,),
+
+                              ///Submit
+                              if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+                                (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                                Center(
+                                  child: Container(
+                                    height: 40,
+                                    width: MediaQuery.of(context).size.width/1.8,
+                                    padding: const EdgeInsets.only(left: 0.0, right: 10),
+                                    child: AppButton(
+                                      onPressed: ()async {
+                                        if(imagePath != null) {
+                                          if (taskController
+                                              .pickedFile !=
+                                              null) {
+                                            await Get.find<
+                                                TaskController>()
+                                                .uploadScreenShot(
+                                                _taskData!.id
+                                                    .toString());
+                                            await Get.find<
+                                                TaskController>()
+                                                .getSpecificTask(
+                                                widget
+                                                    .taskList!.id
+                                                    .toString());
+                                            showCustomSnackBar(
+                                                'Task Submitted Successfully.'
+                                                    .tr,isError: false);
+                                            Get.find<RewardsController>().getTodaysPayoutData();
+                                            Get.find<RewardsController>().getRewardsData("",);
+
+                                          } else {
+                                            showCustomSnackBar(
+                                                'Please upload screenshot.'
+                                                    .tr);
+                                          }
+                                        }
+                                        setState(() {
+                                          imagePath;
+                                        });
+
+                                      },
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                                      text: Text("${'submit'.tr}",
+                                        style: GoogleFonts.inter(
+                                            color: Colors.white,
+                                            fontSize: Dimensions.fontSizeDefault,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      // loading: login is LoginLoading,
+                                      loading: true,
+                                      color: ThemeColors.whiteColor,
+                                      textColor: ThemeColors.whiteColor,
+                                      style: ElevatedButton.styleFrom(
+                                        side: const BorderSide(
+                                            color: ThemeColors.primaryColor, width: 1),
+                                        backgroundColor: ThemeColors.primaryColor,
+                                        // color:Colors.red,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(30))),
+                                      ),
+                                    ),
+                                  ),
+                                ) : const SizedBox(),
 
 
-                        ],
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-
+                    ],
+                  ) : const SizedBox(),
 
                   const SizedBox(
                     height: 30.0,
                   ),
-
-                  ///Upload Screen Shot
-                  // _taskData!.verifiedAt == null ? Padding(
-                  //   padding: const EdgeInsets.only(
-                  //       left: 30.0, right: 30.0, bottom: 10),
-                  //   child: AppButton(
-                  //     onPressed: () async {
-                  //       if (taskController.pickedFile != null) {
-                  //         await Get.find<TaskController>().uploadScreenShot(
-                  //             _taskData!.taskId.toString());
-                  //         await Get.find<TaskController>().getSpecificTask(widget.taskList!.taskId.toString());
-                  //       }else{
-                  //         showCustomSnackBar('Please upload screenshot.'.tr);
-                  //       }
-                  //     },
-                  //     height: 60,
-                  //     width: MediaQuery.of(context).size.width,
-                  //     text: Text(
-                  //       'upload_screenshot'.tr,
-                  //       style: GoogleFonts.inter(
-                  //           color: ThemeColors.primaryColor,
-                  //           fontSize: 18,
-                  //           fontWeight: FontWeight.w600),
-                  //     ),
-                  //     loading: true,
-                  //     style: ElevatedButton.styleFrom(
-                  //       side: const BorderSide(
-                  //           color: ThemeColors.primaryColor, width: 1),
-                  //       backgroundColor: ThemeColors.whiteColor,
-                  //       // color:Colors.red,
-                  //       shape: const RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.all(Radius.circular(50))),
-                  //     ),
-                  //   ),
-                  // ) : const SizedBox(),
-                  //
-                  // ///Add Review
-                  // _taskData!.verifiedAt == null ? Padding(
-                  //   padding: const EdgeInsets.only(
-                  //       left: 30.0, right: 30.0, bottom: 10),
-                  //   child: AppButton(
-                  //     onPressed: () async {
-                  //       showDialog(
-                  //           context: context,
-                  //           builder: (BuildContext context) => CustomDialog(
-                  //                 taskData: widget.taskList,
-                  //               ));
-                  //     },
-                  //     height: 60,
-                  //     width: MediaQuery.of(context).size.width,
-                  //     text: Text(
-                  //       'add_review'.tr,
-                  //       style: GoogleFonts.inter(
-                  //           color: ThemeColors.whiteColor,
-                  //           fontSize: 18,
-                  //           fontWeight: FontWeight.w600),
-                  //     ),
-                  //     loading: true,
-                  //     style: ElevatedButton.styleFrom(
-                  //       side: const BorderSide(
-                  //           color: ThemeColors.primaryColor, width: 1),
-                  //       backgroundColor: ThemeColors.primaryColor,
-                  //       // color:Colors.red,
-                  //       shape: const RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.all(Radius.circular(50))),
-                  //     ),
-                  //   ),
-                  // ) : const SizedBox(),
                 ],
               ),
+
+              ///Youtube
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     ///Title
+              //     Text(
+              //       _taskData!.task!.title ?? "",
+              //       // textAlign: TextAlign.center,
+              //       style: GoogleFonts.inter(
+              //         fontSize: Dimensions.fontSizeOverLarge,
+              //         fontWeight: FontWeight.w600,
+              //         color: ThemeColors.blackColor,
+              //       ),
+              //     ),
+              //
+              //     const SizedBox(
+              //       height: 15.0,
+              //     ),
+              //
+              //     ///Task Number and How to do?
+              //     Row(
+              //       children: [
+              //         Container(
+              //           width: MediaQuery.of(context).size.width/4,
+              //           height: 40,
+              //           decoration: BoxDecoration(
+              //             color: ThemeColors.card3Color,
+              //             borderRadius: BorderRadius.circular(
+              //                 Dimensions.RADIUS_EXTRA_LARGE),
+              //           ),
+              //           child: Padding(
+              //             padding: const EdgeInsets.all(8.0),
+              //             child: Center(
+              //               child: Text("${'task'.tr} #${widget.taskId}",
+              //                 textAlign: TextAlign.center,
+              //                 style: GoogleFonts.inter(
+              //                   fontSize: Dimensions.fontSizeLarge,
+              //                   fontWeight: FontWeight.w600,
+              //                   color: ThemeColors.blackColor,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         const SizedBox(width: 8.0,),
+              //         InkWell(
+              //           onTap: () => Get.to(()=>VideoScreen()),
+              //           child: Container(
+              //             width: MediaQuery.of(context).size.width/3,
+              //             height: 40,
+              //             decoration: BoxDecoration(
+              //               color: ThemeColors.greyTextColor.withOpacity(0.5),
+              //               borderRadius: BorderRadius.circular(
+              //                   Dimensions.RADIUS_EXTRA_LARGE),
+              //             ),
+              //             child: Padding(
+              //               padding: const EdgeInsets.all(8.0),
+              //               child: Center(
+              //                 child: Text("How to do?",
+              //                   textAlign: TextAlign.center,
+              //                   style: GoogleFonts.inter(
+              //                     fontSize: Dimensions.fontSizeLarge,
+              //                     fontWeight: FontWeight.w600,
+              //                     color: ThemeColors.blackColor,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //
+              //     const SizedBox(
+              //       height: 15.0,
+              //     ),
+              //
+              //     ///Rejection Text
+              //     _taskData!.screenShotRejectDes != null ? (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+              //     Container(
+              //       width: MediaQuery.of(context).size.width,
+              //       decoration: BoxDecoration(
+              //         // color: ThemeColors.card3Color,
+              //         border: Border.all(color: ThemeColors.redColor.withOpacity(0.4)),
+              //         borderRadius: BorderRadius.circular(
+              //             Dimensions.RADIUS_EXTRA_LARGE),
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             Text(
+              //               'reason_for_rejection'.tr,
+              //               textAlign: TextAlign.start,
+              //               style: GoogleFonts.inter(
+              //                 fontSize: Dimensions.fontSizeExtraLarge,
+              //                 fontWeight: FontWeight.w700,
+              //                 color: ThemeColors.blackColor,
+              //               ),
+              //             ),
+              //
+              //             Text(
+              //               '${_taskData!.screenShotRejectDes}'.tr,
+              //               textAlign: TextAlign.start,
+              //               style: GoogleFonts.inter(
+              //                 fontSize: Dimensions.fontSizeDefault,
+              //                 fontWeight: FontWeight.w400,
+              //                 color: ThemeColors.redColor,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ) : const SizedBox() : const SizedBox(),
+              //
+              //     const SizedBox(
+              //       height: 15.0,
+              //     ),
+              //
+              //     ///Step 1
+              //     Container(
+              //       decoration: BoxDecoration(
+              //         // color: ThemeColors.card3Color,
+              //         border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
+              //         borderRadius: BorderRadius.circular(
+              //             Dimensions.RADIUS_EXTRA_LARGE),
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             ///Step 1 and check uncheck button
+              //             Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Column(
+              //                   crossAxisAlignment : CrossAxisAlignment.start,
+              //                   children: [
+              //                     Text(
+              //                       'Step 1'.tr,
+              //                       textAlign: TextAlign.start,
+              //                       style: GoogleFonts.inter(
+              //                         fontSize: Dimensions.fontSizeExtraLarge,
+              //                         fontWeight: FontWeight.w700,
+              //                         color: ThemeColors.blackColor,
+              //                       ),
+              //                     ),
+              //                     Text(
+              //                       'add_like'.tr,
+              //                       textAlign: TextAlign.start,
+              //                       style: GoogleFonts.inter(
+              //                         fontSize: Dimensions.fontSizeDefault,
+              //                         fontWeight: FontWeight.w400,
+              //                         color: ThemeColors.blackColor,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //
+              //           (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+              //                 const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+              //               ],
+              //             ),
+              //
+              //             const SizedBox(height: 10,),
+              //
+              //             ///Continue
+              //             if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+              //               (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+              //             Center(
+              //               child: Container(
+              //                 height: 40,
+              //                 width: MediaQuery.of(context).size.width/1.8,
+              //                 padding: const EdgeInsets.only(left: 0.0, right: 10),
+              //                 child: AppButton(
+              //                   onPressed: () async{
+              //                     // Clipboard.setData(ClipboardData(
+              //                     //     text: _taskData!.task!.comments![0].comment ?? ""))
+              //                     //     .then((_) {
+              //                     //   showCustomSnackBar('Review Text Copied.',
+              //                     //       isError: false);
+              //                     // });
+              //
+              //                     // Get.to(()=>VideoScreen());
+              //
+              //
+              //                     imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: "https://youtu.be/aPmohMs9mrQ",)));
+              //                     // imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: _taskData!.task!.url.toString(),)));
+              //                     if(imagePath != null) {
+              //                                       if (taskController
+              //                                               .pickedFile !=
+              //                                           null) {
+              //                                         await Get.find<
+              //                                                 TaskController>()
+              //                                             .uploadScreenShot(
+              //                                                 _taskData!.id
+              //                                                     .toString());
+              //                                         await Get.find<
+              //                                                 TaskController>()
+              //                                             .getSpecificTask(
+              //                                                 widget
+              //                                                     .taskList!.id
+              //                                                     .toString());
+              //                                         showCustomSnackBar(
+              //                                             'Task Submitted Successfully.'
+              //                                                 .tr,isError: false);
+              //                                         Get.find<RewardsController>().getTodaysPayoutData();
+              //                                         Get.find<RewardsController>().getRewardsData("",);
+              //
+              //                                       } else {
+              //                                         showCustomSnackBar(
+              //                                             'Please upload screenshot.'
+              //                                                 .tr);
+              //                                       }
+              //                                     }
+              //                                     setState(() {
+              //                       imagePath;
+              //                     });
+              //                   },
+              //                   shape: const RoundedRectangleBorder(
+              //                       borderRadius: BorderRadius.all(Radius.circular(50))),
+              //                   // icon: const Icon(
+              //                   //   Icons.copy,
+              //                   //   size: 15,
+              //                   // ),
+              //                   text: Text("${'continue'.tr}",
+              //                     style: GoogleFonts.inter(
+              //                         color: Colors.white,
+              //                         fontSize: Dimensions.fontSizeDefault,
+              //                         fontWeight: FontWeight.w600),
+              //                   ),
+              //                   // loading: login is LoginLoading,
+              //                   loading: true,
+              //                   color: ThemeColors.whiteColor,
+              //                   textColor: ThemeColors.whiteColor,
+              //                   style: ElevatedButton.styleFrom(
+              //                     side: const BorderSide(
+              //                         color: ThemeColors.primaryColor, width: 1),
+              //                     backgroundColor: ThemeColors.primaryColor,
+              //                     // color:Colors.red,
+              //                     shape: const RoundedRectangleBorder(
+              //                         borderRadius: BorderRadius.all(Radius.circular(30))),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ) : const SizedBox(),
+              //
+              //
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //
+              //     const SizedBox(
+              //       height: 15.0,
+              //     ),
+              //
+              //     ///Step 2 add subscriptions
+              //     Container(
+              //       decoration: BoxDecoration(
+              //         // color: ThemeColors.card3Color,
+              //         border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
+              //         borderRadius: BorderRadius.circular(
+              //             Dimensions.RADIUS_EXTRA_LARGE),
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             ///Step 1 and check uncheck button
+              //             Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Column(
+              //                   crossAxisAlignment : CrossAxisAlignment.start,
+              //                   children: [
+              //                     Text(
+              //                       'Step 2'.tr,
+              //                       textAlign: TextAlign.start,
+              //                       style: GoogleFonts.inter(
+              //                         fontSize: Dimensions.fontSizeExtraLarge,
+              //                         fontWeight: FontWeight.w700,
+              //                         color: ThemeColors.blackColor,
+              //                       ),
+              //                     ),
+              //                     Text(
+              //                       'add_subscription'.tr,
+              //                       textAlign: TextAlign.start,
+              //                       style: GoogleFonts.inter(
+              //                         fontSize: Dimensions.fontSizeDefault,
+              //                         fontWeight: FontWeight.w400,
+              //                         color: ThemeColors.blackColor,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //
+              //                 (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+              //                 const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+              //               ],
+              //             ),
+              //
+              //             const SizedBox(height: 10,),
+              //
+              //             ///Continue
+              //             if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+              //               (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+              //               Center(
+              //                 child: Container(
+              //                   height: 40,
+              //                   width: MediaQuery.of(context).size.width/1.8,
+              //                   padding: const EdgeInsets.only(left: 0.0, right: 10),
+              //                   child: AppButton(
+              //                     onPressed: () async{
+              //                       Clipboard.setData(ClipboardData(
+              //                           text: _taskData!.task!.comments![0].comment ?? ""))
+              //                           .then((_) {
+              //                         showCustomSnackBar('Review Text Copied.',
+              //                             isError: false);
+              //                       });
+              //
+              //                       // Get.to(()=>VideoScreen());
+              //
+              //
+              //                       // imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: "https://youtu.be/aPmohMs9mrQ",)));
+              //                       imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: _taskData!.task!.url.toString(),)));
+              //                       // if(imagePath != null) {
+              //                       //   if (taskController
+              //                       //       .pickedFile !=
+              //                       //       null) {
+              //                       //     await Get.find<
+              //                       //         TaskController>()
+              //                       //         .uploadScreenShot(
+              //                       //         _taskData!.id
+              //                       //             .toString());
+              //                       //     await Get.find<
+              //                       //         TaskController>()
+              //                       //         .getSpecificTask(
+              //                       //         widget
+              //                       //             .taskList!.id
+              //                       //             .toString());
+              //                       //     showCustomSnackBar(
+              //                       //         'Task Submitted Successfully.'
+              //                       //             .tr,isError: false);
+              //                       //     Get.find<RewardsController>().getTodaysPayoutData();
+              //                       //     Get.find<RewardsController>().getRewardsData("",);
+              //                       //
+              //                       //   } else {
+              //                       //     showCustomSnackBar(
+              //                       //         'Please upload screenshot.'
+              //                       //             .tr);
+              //                       //   }
+              //                       // }
+              //                       setState(() {
+              //                         imagePath;
+              //                       });
+              //                     },
+              //                     shape: const RoundedRectangleBorder(
+              //                         borderRadius: BorderRadius.all(Radius.circular(50))),
+              //                     text: Text("${'continue'.tr}",
+              //                       style: GoogleFonts.inter(
+              //                           color: Colors.white,
+              //                           fontSize: Dimensions.fontSizeDefault,
+              //                           fontWeight: FontWeight.w600),
+              //                     ),
+              //                     // loading: login is LoginLoading,
+              //                     loading: true,
+              //                     color: ThemeColors.whiteColor,
+              //                     textColor: ThemeColors.whiteColor,
+              //                     style: ElevatedButton.styleFrom(
+              //                       side: const BorderSide(
+              //                           color: ThemeColors.primaryColor, width: 1),
+              //                       backgroundColor: ThemeColors.primaryColor,
+              //                       // color:Colors.red,
+              //                       shape: const RoundedRectangleBorder(
+              //                           borderRadius: BorderRadius.all(Radius.circular(30))),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ) : const SizedBox(),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //
+              //     const SizedBox(
+              //       height: 15.0,
+              //     ),
+              //
+              //     ///Step 3 , Watch video and submit image
+              //     Container(
+              //       decoration: BoxDecoration(
+              //         // color: ThemeColors.card3Color,
+              //         border: Border.all(color: ThemeColors.greyTextColor.withOpacity(0.4)),
+              //         borderRadius: BorderRadius.circular(
+              //             Dimensions.RADIUS_EXTRA_LARGE),
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             ///Step 2 and check uncheck button
+              //             Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Column(
+              //                   crossAxisAlignment : CrossAxisAlignment.start,
+              //                   children: [
+              //                     Text(
+              //                       'Step 3'.tr,
+              //                       textAlign: TextAlign.start,
+              //                       style: GoogleFonts.inter(
+              //                         fontSize: Dimensions.fontSizeExtraLarge,
+              //                         fontWeight: FontWeight.w700,
+              //                         color: ThemeColors.blackColor,
+              //                       ),
+              //                     ),
+              //                     Text(
+              //                       'Watch Video'.tr,
+              //                       textAlign: TextAlign.start,
+              //                       style: GoogleFonts.inter(
+              //                         fontSize: Dimensions.fontSizeDefault,
+              //                         fontWeight: FontWeight.w400,
+              //                         color: ThemeColors.blackColor,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //
+              //                 Row(
+              //                   children: [
+              //                      Text(
+              //                       '${_taskData!.status}'.tr,
+              //                       textAlign: TextAlign.start,
+              //                       style: GoogleFonts.inter(
+              //                         fontSize: Dimensions.fontSizeDefault,
+              //                         fontWeight: FontWeight.w500,
+              //                         color: _taskData!.status == "Completed" ? ThemeColors.greenColor : ThemeColors.redColor,
+              //                       ),
+              //                     ),
+              //                     const SizedBox(width: 10,),
+              //                     (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+              //                     const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+              //                   ],
+              //                 ),
+              //               ],
+              //             ),
+              //
+              //             const SizedBox(height: 10,),
+              //
+              //             const Divider(thickness: 1),
+              //
+              //             const SizedBox(height: 5,),
+              //
+              //             if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+              //               (_taskData!.completedAt == null) ?
+              //             Text(
+              //               'after_completion_of_task_kindly_upload_screenshot'.tr,
+              //               textAlign: TextAlign.start,
+              //               style: GoogleFonts.inter(
+              //                 fontSize: Dimensions.fontSizeDefault,
+              //                 fontWeight: FontWeight.w400,
+              //                 color: ThemeColors.blackColor,
+              //               ),
+              //             ):const SizedBox(),
+              //
+              //             const SizedBox(height: 5,),
+              //
+              //             Card(
+              //               // elevation: 4,
+              //               shape: RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(30),
+              //                   side: BorderSide(
+              //                     color: Colors.grey.withOpacity(0.4),
+              //                   )),
+              //               child: ListTile(
+              //                 minLeadingWidth: 0,
+              //                 leading: const Icon(
+              //                   Icons.image_outlined,
+              //                   color: Colors.blue,
+              //                 ),
+              //                 title: imagePath != null
+              //                     ? Text(
+              //                   imagePath!.split("/")
+              //                             .last
+              //                             .toString() ?? "",
+              //                   maxLines: imagePath!.split("/")
+              //                       .last
+              //                       .toString()
+              //                       .length ?? 0 ,
+              //                   style: GoogleFonts.inter(
+              //                     fontSize: Dimensions.fontSizeDefault,
+              //                     fontWeight: FontWeight.w400,
+              //                   ),
+              //                 )
+              //                     : Text(
+              //                   "Image",
+              //                   style: GoogleFonts.inter(
+              //                     fontSize: Dimensions.fontSizeDefault,
+              //                     fontWeight: FontWeight.w600,
+              //                   ),
+              //                 ),
+              //                 trailing: Wrap(
+              //                   crossAxisAlignment: WrapCrossAlignment.center,
+              //                   // spacing: 12,
+              //                   children: [
+              //                     _taskData!.verifyImageUrl != null ?
+              //                     InkWell(
+              //                       onTap: (){
+              //                         Get.to(()=>ImageViewWidget(imageUrl: _taskData!.verifyImageUrl!,));
+              //                       },
+              //                       child: const Icon(
+              //                         Icons.remove_red_eye,
+              //                         color: ThemeColors.blackColor,
+              //                         size: 20,
+              //                       ),
+              //                     ) : const SizedBox(),
+              //                     if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+              //                       _taskData!.completedAt == null
+              //                         ? IconButton(
+              //                       onPressed: () {
+              //                         Get.find<TaskController>().pickGalleryImage(
+              //                             _taskData!.taskId.toString());
+              //                       },
+              //                       icon: SvgPicture.asset(
+              //                         Images.download_icon,
+              //                         color: ThemeColors.blackColor,
+              //                         // size: 20,
+              //                       ),
+              //                     )
+              //                         : const SizedBox(),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //
+              //             const SizedBox(height: 10,),
+              //
+              //             ///Submit
+              //             if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
+              //               (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+              //             Center(
+              //               child: Container(
+              //                 height: 40,
+              //                 width: MediaQuery.of(context).size.width/1.8,
+              //                 padding: const EdgeInsets.only(left: 0.0, right: 10),
+              //                 child: AppButton(
+              //                   onPressed: ()async {
+              //                     if(imagePath != null) {
+              //                       if (taskController
+              //                           .pickedFile !=
+              //                           null) {
+              //                         await Get.find<
+              //                             TaskController>()
+              //                             .uploadScreenShot(
+              //                             _taskData!.id
+              //                                 .toString());
+              //                         await Get.find<
+              //                             TaskController>()
+              //                             .getSpecificTask(
+              //                             widget
+              //                                 .taskList!.id
+              //                                 .toString());
+              //                         showCustomSnackBar(
+              //                             'Task Submitted Successfully.'
+              //                                 .tr,isError: false);
+              //                         Get.find<RewardsController>().getTodaysPayoutData();
+              //                         Get.find<RewardsController>().getRewardsData("",);
+              //
+              //                       } else {
+              //                         showCustomSnackBar(
+              //                             'Please upload screenshot.'
+              //                                 .tr);
+              //                       }
+              //                     }
+              //
+              //                   },
+              //                   shape: const RoundedRectangleBorder(
+              //                       borderRadius: BorderRadius.all(Radius.circular(50))),
+              //                   text: Text("${'submit'.tr}",
+              //                     style: GoogleFonts.inter(
+              //                         color: Colors.white,
+              //                         fontSize: Dimensions.fontSizeDefault,
+              //                         fontWeight: FontWeight.w600),
+              //                   ),
+              //                   // loading: login is LoginLoading,
+              //                   loading: true,
+              //                   color: ThemeColors.whiteColor,
+              //                   textColor: ThemeColors.whiteColor,
+              //                   style: ElevatedButton.styleFrom(
+              //                     side: const BorderSide(
+              //                         color: ThemeColors.primaryColor, width: 1),
+              //                     backgroundColor: ThemeColors.primaryColor,
+              //                     // color:Colors.red,
+              //                     shape: const RoundedRectangleBorder(
+              //                         borderRadius: BorderRadius.all(Radius.circular(30))),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ) : const SizedBox(),
+              //
+              //
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //
+              //
+              //     const SizedBox(
+              //       height: 30.0,
+              //     ),
+              //
+              //   ],
+              // ),
             ),
           ),
         ) : const SizedBox() : const Center(child: CircularProgressIndicator(color: ThemeColors.primaryColor,),);

@@ -67,5 +67,8 @@
   "upload_screenshot": "Submit Image",
   "continue": "Continue",
   "are_you_sure_you_want_to_upload" : "Are you sure you want to ScreenShot / Upload?",
-  "reason_for_rejection" : "Reason For Rejection"
+  "reason_for_rejection" : "Reason For Rejection",
+  "add_like" : "Add Like",
+  "add_subscription" : "Add Subscription",
+  "video_screen": "Video Screen"
 }

@@ -70,6 +70,7 @@ class TaskListModel {
   String? verifyImageUrl;
   Task? task;
   User? user;
+  HowToVideo? howToVideo;
 
   TaskListModel(
       {this.id,
@@ -86,7 +87,9 @@ class TaskListModel {
         this.updatedAt,
         this.task,
         this.verifyImageUrl,
-        this.user});
+        this.user,
+        this.howToVideo,
+      });
 
   TaskListModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -102,6 +105,9 @@ class TaskListModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     verifyImageUrl = json['verify_image_url'];
+    howToVideo = json['how_to_video'] != null
+        ? new HowToVideo.fromJson(json['how_to_video'])
+        : null;
     task = json['task'] != null ? new Task.fromJson(json['task']) : null;
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
@@ -121,12 +127,40 @@ class TaskListModel {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['verify_image_url'] = this.verifyImageUrl;
+    if (this.howToVideo != null) {
+      data['how_to_video'] = this.howToVideo!.toJson();
+    }
     if (this.task != null) {
       data['task'] = this.task!.toJson();
     }
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
+    return data;
+  }
+}
+
+class HowToVideo {
+  String? videoUrl;
+  String? title;
+  String? descirption;
+  String? howToDo;
+
+  HowToVideo({this.videoUrl, this.title, this.descirption, this.howToDo});
+
+  HowToVideo.fromJson(Map<String, dynamic> json) {
+    videoUrl = json['video_url'];
+    title = json['title'];
+    descirption = json['descirption'];
+    howToDo = json['how_to_do'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['video_url'] = this.videoUrl;
+    data['title'] = this.title;
+    data['descirption'] = this.descirption;
+    data['how_to_do'] = this.howToDo;
     return data;
   }
 }

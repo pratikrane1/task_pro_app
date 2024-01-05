@@ -163,8 +163,14 @@ class TaskController extends GetxController implements GetxService{
     final name = "Screenshot_$time";
     final result = await ImageGallerySaver.saveImage(bytes,name:name);
     // final path = result['filePath']+"/$name";
+    Directory? temp;
 
-    final temp = await getTemporaryDirectory();
+    if (Platform.isIOS) {
+      temp = await getApplicationDocumentsDirectory();
+    } else {
+      temp = await getTemporaryDirectory();
+    }
+    // final temp = await getTemporaryDirectory();
     final path = '${temp.path}/image.jpg';
     File(path).writeAsBytesSync(bytes);
     print(path);
