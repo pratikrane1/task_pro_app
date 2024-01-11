@@ -18,6 +18,12 @@ class TaskRepo extends GetxService {
         .getData(AppConstants.SPECIFIC_TASK+"/$taskId",);
   }
 
+  Future<Response> getYoutubeTaskDuration(String videoId) async {
+    return await apiClient
+        .postYoutubeApi(AppConstants.YOUTUBE_DURATION_API+
+        "?part=contentDetails&id=$videoId&fields=items(contentDetails(duration))&key=AIzaSyBnqCctouT4vLm1DLi4-3fvlGmvgSwVlQI");
+  }
+
   Future<Response> getTaskList(String assignAt) async {
     return await apiClient
         .getData(AppConstants.TASK_LIST+"?assigned_at=$assignAt",);

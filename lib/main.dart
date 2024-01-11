@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
@@ -15,10 +16,17 @@ import 'helper/get_di.dart' as di;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_app_update/in_app_update.dart';
 
+import 'helper/notification_helper.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
@@ -57,7 +65,24 @@ void main() async{
     print('User declined or has not accepted permission');
   }
 
+  // Map<String, Map<String, String>> _languages = await di.init();
   Map<String, Map<String, String>> _languages = await di.init();
+  String? fcmTitle;
+  try {
+    if (GetPlatform.isMobile) {
+      final RemoteMessage? remoteMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
+      if (remoteMessage != null) {
+        fcmTitle = remoteMessage.notification!.title != null ? remoteMessage.notification!.title : null;
+        // Get.find<NotificationController>().getFcmNotificationTitle(fcmTitle!);
+        print(fcmTitle);
+      }
+      await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
+      FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+      // handles
+    }
+  } catch (e) {}
+
 
   runApp(MyApp(
     languages: _languages,fcmTitle: "",

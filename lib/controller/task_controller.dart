@@ -10,6 +10,7 @@ import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/controller/rewards_controller.dart';
 import 'package:task_pro/data/api/api_checker.dart';
+import 'package:task_pro/data/model/Duration_model.dart';
 import 'package:task_pro/data/model/all_task_model.dart';
 import 'package:task_pro/data/model/response_model.dart';
 import 'package:task_pro/data/model/task_model.dart';
@@ -30,6 +31,7 @@ class TaskController extends GetxController implements GetxService{
   ImagePicker picker = ImagePicker();
   TaskModel? _taskList;
   TaskListModel? _taskData;
+  DurationModel? _durationData;
   List<AllTaskModel>? _allTaskList;
   List<AllTaskModel>? _allTaskListScreen;
   bool _isSpecificTaskLoading = false;
@@ -41,6 +43,7 @@ class TaskController extends GetxController implements GetxService{
 
   TaskModel? get taskList => _taskList;
   TaskListModel? get taskData => _taskData;
+  DurationModel? get durationData => _durationData;
   List<AllTaskModel>? get allTaskList => _allTaskList;
   List<AllTaskModel>? get allTaskListScreen => _allTaskListScreen;
   bool get isSpecificTaskLoading => _isSpecificTaskLoading;
@@ -85,6 +88,21 @@ class TaskController extends GetxController implements GetxService{
     }
     update();
     return _taskData!;
+  }
+
+
+  Future<DurationModel> getYoutubeTaskVideoDuration(String videoId) async {
+
+    Response response = await taskRepo.getYoutubeTaskDuration(videoId);
+    if (response.statusCode == 200) {
+      _durationData = DurationModel.fromJson(response.body);
+
+      print(_durationData);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
+    return _durationData!;
   }
 
 

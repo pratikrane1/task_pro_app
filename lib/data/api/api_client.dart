@@ -86,15 +86,15 @@ class ApiClient extends GetxService {
     }
   }
 
-  Future<Response> postEasebuzzData(String uri, dynamic body) async {
+  Future<Response> postYoutubeApi(String uri,) async {
     try {
-      if (Foundation.kDebugMode) {
-        print('====> API Body: $body');
-      }
-      Http.Response _response = await Http.post(
+      // if (Foundation.kDebugMode) {
+      //   print('====> API Body: $body');
+      // }
+      Http.Response _response = await Http.get(
         Uri.parse(uri),
         // body: jsonEncode(body),
-        body: jsonEncode(body),
+        // body: jsonEncode(body),
       ).timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(_response, uri);
     } catch (e) {

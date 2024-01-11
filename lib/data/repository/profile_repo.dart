@@ -9,7 +9,7 @@ class ProfileRepo extends GetxService {
 
   Future<Response> getProfileData() async {
     var fcmToken = await FirebaseMessaging.instance.getToken();
-
+    print("FCM TOKEN : $fcmToken");
     return await apiClient
         .getData(AppConstants.PROFILE_DATA+"/$fcmToken",);
   }

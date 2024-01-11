@@ -74,7 +74,7 @@ class NotificationHelper {
       contentTitle: title, htmlFormatContentTitle: true,
     );
     AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'destek-pro', 'destek-pro', importance: Importance.max,
+      'task-pro', 'task-pro', importance: Importance.max,
       styleInformation: bigTextStyleInformation, priority: Priority.max, playSound: true,
       sound: RawResourceAndroidNotificationSound('notification'),
     );

@@ -22,6 +22,7 @@ class AppConstants {
   static const String REWARDS = '/show-user-payout';
   static const String DASH_PAYOUT = '/show-dashboard-payout';
   static const String POLICY = '/policy';
+  static const String YOUTUBE_DURATION_API = 'https://youtube.googleapis.com/youtube/v3/videos';
 
 
   //Shared Key
