@@ -29,6 +29,7 @@ class RewardsModel {
   int? incomplete;
   int? totalTask;
   int? totalUser;
+  String? date;
   List<Datalist>? datalist;
 
   RewardsModel(
@@ -38,6 +39,7 @@ class RewardsModel {
         this.incomplete,
         this.totalTask,
         this.totalUser,
+        this.date,
         this.datalist});
 
   RewardsModel.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class RewardsModel {
     incomplete = json['incomplete'];
     totalTask = json['total_task'];
     totalUser = json['total_user'];
+    date = json['date'];
     if (json['datalist'] != null) {
       datalist = <Datalist>[];
       json['datalist'].forEach((v) {
@@ -63,6 +66,7 @@ class RewardsModel {
     data['incomplete'] = this.incomplete;
     data['total_task'] = this.totalTask;
     data['total_user'] = this.totalUser;
+    data['date'] = this.date;
     if (this.datalist != null) {
       data['datalist'] = this.datalist!.map((v) => v.toJson()).toList();
     }

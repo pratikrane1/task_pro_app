@@ -7,12 +7,9 @@ import 'package:task_pro/util/images.dart';
 import 'package:task_pro/util/theme_colors.dart';
 import 'package:task_pro/view/screens/all%20task/all_task_screen.dart';
 import 'package:task_pro/view/screens/home/home_screen.dart';
-import 'package:task_pro/view/screens/home/widget/todays_task_widget.dart';
+import 'package:task_pro/view/screens/payout/payout_screen.dart';
 import 'package:task_pro/view/screens/profile/profile_screen.dart';
-import 'package:task_pro/view/screens/profile/user%20profile/user_profile_details.dart';
-import 'package:task_pro/view/screens/rewards/rewards_screen.dart';
-import 'package:task_pro/view/screens/task/task_detail_screen.dart';
-import 'package:task_pro/view/screens/task/task_screen.dart';
+
 
 class BottomNavigation extends StatefulWidget {
   int index;

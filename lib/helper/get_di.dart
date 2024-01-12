@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_pro/controller/auth_controller.dart';
 import 'package:task_pro/controller/localization_controller.dart';
+import 'package:task_pro/controller/notification_controller.dart';
 import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/controller/rewards_controller.dart';
 import 'package:task_pro/controller/task_controller.dart';
@@ -11,6 +12,7 @@ import 'package:task_pro/data/api/api_client.dart';
 import 'package:task_pro/data/model/language_model.dart';
 import 'package:task_pro/data/repository/auth_repo.dart';
 import 'package:task_pro/data/repository/language_repo.dart';
+import 'package:task_pro/data/repository/notification_repo.dart';
 import 'package:task_pro/data/repository/profile_repo.dart';
 import 'package:task_pro/data/repository/rewards_repo.dart';
 import 'package:task_pro/data/repository/task_repo.dart';
@@ -28,6 +30,7 @@ Future<Map<String, Map<String, String>>>  init() async {
   Get.lazyPut(() => TaskRepo(apiClient: Get.find()));
   Get.lazyPut(() => ProfileRepo(apiClient: Get.find()));
   Get.lazyPut(() => RewardsRepo(apiClient: Get.find()));
+  Get.lazyPut(() => NotificationRepo(apiClient: Get.find()));
 
 
   // Controller
@@ -36,6 +39,7 @@ Future<Map<String, Map<String, String>>>  init() async {
   Get.lazyPut(() => TaskController(taskRepo: Get.find()));
   Get.lazyPut(() => ProfileController(profileRepo: Get.find()));
   Get.lazyPut(() => RewardsController(rewardsRepo: Get.find()));
+  Get.lazyPut(() => NotificationController(notificationRepo: Get.find()));
 
 
   // Retrieving localized data

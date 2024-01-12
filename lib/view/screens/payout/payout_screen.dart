@@ -7,8 +7,8 @@ import 'package:task_pro/data/model/rewards_model.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:task_pro/util/theme_colors.dart';
+import 'package:task_pro/view/screens/payout/widget/level_card_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:task_pro/view/screens/rewards/widget/level_card_widget.dart';
 
 class RewardsScreen extends StatefulWidget {
   const RewardsScreen({super.key});
@@ -22,90 +22,40 @@ class _RewardsScreenState extends State<RewardsScreen> {
   RewardsModel? _rewardsData;
   int? earnRewards = 0;
   int? totalCompletedTask = 0;
+  int? todaysPayout = 0;
   int? totalUser = 0;
   int? totalPayout = 0;
+  DateTime currentDate = DateTime.now();
+  String? selectedDate;
 
   @override
   void initState(){
     super.initState();
-    Get.find<RewardsController>().getRewardsData("",);
+    selectedDate = DateFormat('yyyy-MM-dd').format(currentDate);
+    Get.find<RewardsController>().getRewardsData(selectedDate!,);
   }
 
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      // initialDate: selectedDate,
+      initialDate: currentDate == null ? DateTime.now() : currentDate,
+      initialDatePickerMode: DatePickerMode.day,
+      firstDate: DateTime(1945),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        currentDate = picked;
+        if (currentDate != null) {
+          selectedDate = DateFormat('yyyy-MM-dd').format(currentDate);
+          print(selectedDate);
+          Get.find<RewardsController>().getRewardsData(selectedDate!,);
 
-  List<PopupMenuEntry<dynamic>> function(BuildContext) {
-    return [
-      ///today
-      PopupMenuItem(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                "Today".tr,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  color: ThemeColors.blackColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-        onTap: () async {
-          await Get.find<RewardsController>().getRewardsData("jan",);
-        },
-      ),
-
-      ///last 7 days
-      PopupMenuItem(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                "Last 7 Days".tr,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  color: ThemeColors.blackColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-        onTap: () async {
-          await Get.find<RewardsController>().getRewardsData("feb",);
-        },
-      ),
-
-      ///last 30 days
-      PopupMenuItem(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                "Last 30 Days".tr,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  color: ThemeColors.blackColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-        onTap: () async {
-          await Get.find<RewardsController>().getRewardsData("mar",);
-        },
-      ),
-
-    ];
+        }
+      });
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +118,12 @@ class _RewardsScreenState extends State<RewardsScreen> {
             ],
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: ()=>_selectDate(context),
+              icon: const Icon(Icons.filter_list_alt,color: ThemeColors.whiteColor,)
+          )
+        ],
       ),
       body: GetBuilder<RewardsController>(builder: (rewardsController) {
         _rewardsData = rewardsController.rewardsData;
@@ -178,6 +134,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
             setState(() {
               earnRewards = _rewardsData!.total!.toInt();
               totalCompletedTask = _rewardsData!.completed!.toInt();
+              todaysPayout = _rewardsData!.today!.toInt();
               totalUser = _rewardsData!.totalUser!.toInt();
               totalPayout = _rewardsData!.total!.toInt();
             });
@@ -186,14 +143,26 @@ class _RewardsScreenState extends State<RewardsScreen> {
 
         return RefreshIndicator(
             onRefresh: () async{
-              await Get.find<RewardsController>().getRewardsData("",);
+              await Get.find<RewardsController>().getRewardsData(selectedDate!,);
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _rewardsData != null ?
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,bottom: 5.0),
+                      child: Text("Date: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(_rewardsData!.date!))}",
+                        style: GoogleFonts.inter(
+                          fontSize: Dimensions.fontSizeLarge,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ): const SizedBox(),
+
                     _rewardsData != null ?
                     Card(
                       elevation: 4,
@@ -413,10 +382,10 @@ class _RewardsScreenState extends State<RewardsScreen> {
               children: [
 
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0,top: 10.0),
+                  padding: const EdgeInsets.only(left: 50.0,top: 10.0),
                   child: Column(
                     children: [
-                      Text("Total Completed Tasks".tr,
+                      Text("Todays Payout".tr,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
                           color: ThemeColors.whiteColor,
@@ -425,7 +394,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                         ),
                       ),
                       const SizedBox(height: 5,),
-                      Text("$totalCompletedTask".tr,
+                      Text("$todaysPayout".tr,
                         style: GoogleFonts.inter(
                           color: ThemeColors.whiteColor,
                           fontSize: Dimensions.fontSizeLarge,
@@ -438,9 +407,9 @@ class _RewardsScreenState extends State<RewardsScreen> {
                 const SizedBox(
                     height:60,
                     width: 10,
-                    child: VerticalDivider(indent: 8,color: ThemeColors.whiteColor,thickness: 1.5,)),
+                    child: VerticalDivider(indent: 5,endIndent: 0,color: ThemeColors.whiteColor,thickness: 1.5,)),
                 Padding(
-                  padding: const EdgeInsets.only(right: 50.0,top: 10.0,left: 15.0),
+                  padding: const EdgeInsets.only(right: 50.0,top: 10.0,left: 0.0),
                   child: Column(
 
                     children: [

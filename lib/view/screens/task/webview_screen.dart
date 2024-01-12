@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -51,10 +52,10 @@ class _WebviewScreenState extends State<WebviewScreen> {
   @override
   void initState() {
     super.initState();
-    if(widget.isYoutube) {
-      videoIdd = YoutubePlayer.convertUrlToId(widget.url);
-      apiCall();
-    }
+    // if(widget.isYoutube) {
+    //   videoIdd = YoutubePlayer.convertUrlToId(widget.url);
+    //   apiCall();
+    // }
     _inAppWebViewController;
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -86,7 +87,8 @@ class _WebviewScreenState extends State<WebviewScreen> {
       ..loadRequest(
         Uri.parse(widget.url),
         // Uri.parse("https://play.google.com/store/apps/details?id=com.destek.proapp&pcampaignid=web_share"),
-        // Uri.parse("https://play.google.com/store/apps/details?id=com.destek.proapp"),
+        // Uri.parse("https://play.google.com/store/apps"),
+        // Uri.parse("market://details?id=com.meradoc"),
       );
   }
 
@@ -176,7 +178,11 @@ class _WebviewScreenState extends State<WebviewScreen> {
       items: [
         PopupMenuItem(
           value: 1,
-          child: RichText(
+          child:  widget.isYoutube ? SizedBox(
+              width:MediaQuery.of(context).size.width,
+              // height: 50,
+              child: Html(data: widget.howToDoText)) :
+          RichText(
             text: TextSpan(
               text: "Steps:\n\n",
                 style: GoogleFonts.inter(
@@ -185,7 +191,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                     color: Colors.black),
               children: [
                 TextSpan(
-                  text: widget.isYoutube ? "* Watch full video\n" : "* Add 5 star rating,\n",
+                  text: "* Add 5 star rating,\n",
                   style: GoogleFonts.montserrat(
                     fontSize: Dimensions.fontSizeSmall,
                     fontWeight: FontWeight.w400,
@@ -193,7 +199,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: widget.isYoutube ? "* After that like video and subscribe\n" : '* Press and Hold on review textbox and paste the copied text.\n',
+                  text: '* Press and Hold on review textbox and paste the copied text.\n',
                   style: GoogleFonts.montserrat(
                     fontSize: Dimensions.fontSizeSmall,
                     fontWeight: FontWeight.w400,
@@ -201,7 +207,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: widget.isYoutube ? "* And then press the above ScreenShot/Upload Button.\n" : '* After that click on the post button.\n',
+                  text: '* After that click on the post button.\n',
                   style: GoogleFonts.montserrat(
                     fontSize: Dimensions.fontSizeSmall,
                     fontWeight: FontWeight.w400,
@@ -209,7 +215,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: widget.isYoutube ? " " : '* Then click on See Your Review button.\n',
+                  text: '* Then click on See Your Review button.\n',
                   style: GoogleFonts.montserrat(
                     fontSize: Dimensions.fontSizeSmall,
                     fontWeight: FontWeight.w400,
@@ -217,7 +223,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: widget.isYoutube ? " " : '* Then list out your name and press the above ScreenShot/Upload Button.\n',
+                  text: '* Then list out your name and press the above ScreenShot/Upload Button.\n',
                   style: GoogleFonts.montserrat(
                     fontSize: Dimensions.fontSizeSmall,
                     fontWeight: FontWeight.w400,
@@ -311,11 +317,11 @@ class _WebviewScreenState extends State<WebviewScreen> {
             const SizedBox(width: 10.0,),
           ],
         ),
-        floatingActionButton: widget.isYoutube ? isPageLoad ? FloatingActionButton.extended(
-          backgroundColor: ThemeColors.redColor,
-          label: Text('$hours:$minutes:$seconds'),
-          onPressed: () {  },
-        ) : null : null,
+        // floatingActionButton: widget.isYoutube ? isPageLoad ? FloatingActionButton.extended(
+        //   backgroundColor: ThemeColors.redColor,
+        //   label: Text('$hours:$minutes:$seconds'),
+        //   onPressed: () {  },
+        // ) : null : null,
         body: SafeArea(
           child: Stack(
             children: [

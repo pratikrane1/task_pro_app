@@ -6,9 +6,9 @@ import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:task_pro/util/theme_colors.dart';
 import 'package:task_pro/view/base/custome_dialog.dart';
+import 'package:task_pro/view/screens/payout/payout_screen.dart';
 import 'package:task_pro/view/screens/profile/policy%20screen/policy_screen.dart';
 import 'package:task_pro/view/screens/profile/user%20profile/user_profile_details.dart';
-import 'package:task_pro/view/screens/rewards/rewards_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

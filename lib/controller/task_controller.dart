@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
@@ -19,11 +18,11 @@ import 'package:task_pro/view/base/custom_snackbar.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class TaskController extends GetxController implements GetxService{
+class TaskController extends GetxController implements GetxService {
   final TaskRepo taskRepo;
   TaskController({required this.taskRepo});
-
 
   XFile? _pickedFile;
   XFile? _pickedFile1;
@@ -38,8 +37,6 @@ class TaskController extends GetxController implements GetxService{
   bool _isGetTaskLoading = false;
   bool _isGetAllTaskLoading = false;
   bool _isUploadLoading = false;
-
-
 
   TaskModel? get taskList => _taskList;
   TaskListModel? get taskData => _taskData;
@@ -59,7 +56,6 @@ class TaskController extends GetxController implements GetxService{
   }
 
   Future autoAssignTask() async {
-
     Response response = await taskRepo.autoAssignTask();
     if (response.statusCode == 200) {
       await Get.find<TaskController>().getAllTask("");
@@ -90,9 +86,7 @@ class TaskController extends GetxController implements GetxService{
     return _taskData!;
   }
 
-
   Future<DurationModel> getYoutubeTaskVideoDuration(String videoId) async {
-
     Response response = await taskRepo.getYoutubeTaskDuration(videoId);
     if (response.statusCode == 200) {
       _durationData = DurationModel.fromJson(response.body);
@@ -104,7 +98,6 @@ class TaskController extends GetxController implements GetxService{
     update();
     return _durationData!;
   }
-
 
   Future<TaskModel> getTask(String assignAt) async {
     // int id = 85;
@@ -124,7 +117,6 @@ class TaskController extends GetxController implements GetxService{
     update();
     return _taskList!;
   }
-
 
   Future<List<AllTaskModel>> getAllTask(String dataType) async {
     // int id = 85;
@@ -164,23 +156,22 @@ class TaskController extends GetxController implements GetxService{
     return _allTaskListScreen!;
   }
 
-
   Future<ResponseModel> uploadScreenShot(String taskId) async {
     // _pickedFile = null;
     // _rawFile = null;
     ResponseModel? _responseModel;
-    Response response = await taskRepo.uploadScreenshot(_pickedFile!,taskId);
+    Response response = await taskRepo.uploadScreenshot(_pickedFile!, taskId);
     if (response.statusCode == 200) {
-      _responseModel = ResponseModel(true, response.bodyString.toString(),1);
+      _responseModel = ResponseModel(true, response.bodyString.toString(), 1);
       // getProfileData();
       _pickedFile = null;
       _rawFile = null;
       update();
       _isUploadLoading = true;
-      showCustomSnackBar(response.body["message"].toString(),isError: false);
+      showCustomSnackBar(response.body["message"].toString(), isError: false);
     } else {
       ApiChecker.checkApi(response);
-      showCustomSnackBar(response.body["message"].toString(),isError: true);
+      showCustomSnackBar(response.body["message"].toString(), isError: true);
       _pickedFile = null;
       _rawFile = null;
     }
@@ -189,12 +180,36 @@ class TaskController extends GetxController implements GetxService{
     // }
   }
 
+  Future launchUrl(String url) async {
+    // var url_android = "https://www.youtube.com/";
+    // var url_ios = "https://www.youtube.com/";
 
-  Future<String> saveImage(Uint8List bytes,) async{
+    if (Platform.isIOS) {
+      if (await canLaunch(url)) {
+        await launch(url, forceSafariVC: false);
+      } else {
+        showCustomSnackBar("Could not launch", isError: true);
+      }
+    } else {
+      // android , web
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        showCustomSnackBar("Could not launch", isError: true);
+      }
+    }
+  }
+
+  Future<String> saveImage(
+    Uint8List bytes,
+  ) async {
     await [Permission.storage].request();
-    final time = DateTime.now().toIso8601String().replaceAll('.', '_').replaceAll(':','_');
+    final time = DateTime.now()
+        .toIso8601String()
+        .replaceAll('.', '_')
+        .replaceAll(':', '_');
     final name = "Screenshot_$time";
-    final result = await ImageGallerySaver.saveImage(bytes,name:name);
+    final result = await ImageGallerySaver.saveImage(bytes, name: name);
     // final path = result['filePath']+"/$name";
     Directory? temp;
 
@@ -213,25 +228,23 @@ class TaskController extends GetxController implements GetxService{
     return _pickedFile!.path;
   }
 
-
-
   Future pickGalleryImage(String taskId) async {
-    try{
+    try {
       _pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (_pickedFile != null) {
         final bytes = (await _pickedFile!.readAsBytes()).lengthInBytes;
         // if(bytes <= 1000000){
-          print("Image Size : ${bytes}");
-          _pickedFile1 = await compressImage(_pickedFile!);
-          _rawFile = await _pickedFile1!.readAsBytes();
-          // uploadScreenShot(taskId);
+        print("Image Size : ${bytes}");
+        _pickedFile1 = await compressImage(_pickedFile!);
+        _rawFile = await _pickedFile1!.readAsBytes();
+        // uploadScreenShot(taskId);
         // }else{
         //   showCustomSnackBar("image_should_be_less_than_1mb".tr,isError: true);
         // }
-      }else{
+      } else {
         throw Exception('File is not available');
       }
-    } catch (e){
+    } catch (e) {
       _pickedFile = null;
       print(e);
     }
@@ -240,17 +253,17 @@ class TaskController extends GetxController implements GetxService{
 
   static Future<XFile> compressImage(XFile file) async {
     final ImageFile _input =
-    ImageFile(filePath: file.path, rawBytes: await file.readAsBytes());
+        ImageFile(filePath: file.path, rawBytes: await file.readAsBytes());
     final Configuration _config = Configuration(
       outputType: ImageOutputType.webpThenPng,
       useJpgPngNativeCompressor: false,
       quality: (_input.sizeInBytes / 1048576) < 2
           ? 90
           : (_input.sizeInBytes / 1048576) < 5
-          ? 50
-          : (_input.sizeInBytes / 1048576) < 10
-          ? 10
-          : 1,
+              ? 50
+              : (_input.sizeInBytes / 1048576) < 10
+                  ? 10
+                  : 1,
     );
     final ImageFile _output = await compressor
         .compress(ImageFileConfiguration(input: _input, config: _config));
@@ -260,5 +273,4 @@ class TaskController extends GetxController implements GetxService{
     }
     return XFile.fromData(_output.rawBytes);
   }
-
 }

@@ -4,16 +4,13 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_pro/controller/rewards_controller.dart';
-import 'package:task_pro/controller/task_controller.dart';
-import 'package:task_pro/data/model/all_task_model.dart';
 import 'package:task_pro/data/model/rewards_model.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:task_pro/util/theme_colors.dart';
 import 'package:task_pro/view/base/empty_card_widget.dart';
-import 'package:task_pro/view/screens/bottom%20navigation/bottom_nav_bar.dart';
 import 'package:task_pro/view/screens/home/widget/todays_task_widget.dart';
-import 'package:task_pro/view/screens/rewards/rewards_screen.dart';
+import 'package:task_pro/view/screens/payout/payout_screen.dart';
 
 class PayoutWidget extends StatefulWidget {
   const PayoutWidget({super.key});

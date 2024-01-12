@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -387,10 +388,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                             isError: false);
                                       });
 
-                                      // Get.to(()=>VideoScreen());
 
-
-                                      // imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: "https://youtu.be/aPmohMs9mrQ",)));
                                       imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: _taskData!.task!.url.toString(),howToDoText: _taskData!.howToVideo!.howToDo!,isYoutube : _taskData!.task!.taskType == "Youtube Video" ? true : false)));
                                       if(imagePath != null) {
                                                         if (taskController
@@ -686,8 +684,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     ],
                   ) : const SizedBox(),
 
-                  _taskData!.task!.taskType == "Youtube Video" ?
-                  ///Youtube Steps
+                  (_taskData!.task!.taskType == "Youtube Video" || _taskData!.task!.taskType == "Download Playstore App") ?
+                  ///Youtube Steps And Playstore
                   Column(
                     children: [
                       ///Step 1 and check uncheck button
@@ -704,11 +702,11 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ///Step 1 and check uncheck button
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              Column(
+                                crossAxisAlignment : CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         'Step 1'.tr,
@@ -719,23 +717,34 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                           color: ThemeColors.blackColor,
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: MediaQuery.of(context).size.width/1.5,
-                                        child: Text(
-                                          'Watch complete video, Like video and Subscribe video.'.tr,
-                                          textAlign: TextAlign.start,
-                                          style: GoogleFonts.inter(
-                                            fontSize: Dimensions.fontSizeDefault,
-                                            fontWeight: FontWeight.w400,
-                                            color: ThemeColors.blackColor,
-                                          ),
-                                        ),
-                                      ),
+                                      (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
+                                      const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+
                                     ],
                                   ),
-
-                                  (_taskData!.status != "Completed" && _taskData!.status != "In-Review") ?
-                                  const Icon(Icons.circle_outlined) : const Icon(Icons.check_circle,color: ThemeColors.primaryColor,),
+                                  SizedBox(
+                                    // width: MediaQuery.of(context).size.width/1.5,
+                                    child: Html(
+                                      data: _taskData!.task!.description ?? "",
+                                      // style: {
+                                      //   "p": Style(
+                                      //   fontSize: FontSize(Dimensions.fontSizeOverLarge),
+                                      //   fontWeight: FontWeight.w400,
+                                      //   color: ThemeColors.blackColor,
+                                      // ),
+                                      // },
+                                    )
+                                    // Text(
+                                    //   // 'Watch complete video, Like video and Subscribe video.'.tr,
+                                    //   _taskData!.task!.description ?? "",
+                                    //   textAlign: TextAlign.start,
+                                    //   style: GoogleFonts.inter(
+                                    //     fontSize: Dimensions.fontSizeDefault,
+                                    //     fontWeight: FontWeight.w400,
+                                    //     color: ThemeColors.blackColor,
+                                    //   ),
+                                    // ),
+                                  ),
                                 ],
                               ),
 
@@ -751,10 +760,12 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                     padding: const EdgeInsets.only(left: 0.0, right: 10),
                                     child: AppButton(
                                       onPressed: () async{
-
-
-                                        // imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: "https://youtu.be/aPmohMs9mrQ",)));
-                                        imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>WebviewScreen(url: _taskData!.task!.url.toString(),howToDoText: _taskData!.howToVideo!.howToDo!,isYoutube : _taskData!.task!.taskType == "Youtube Video" ? true : false)));
+                                        _taskData!.task!.taskType == "Youtube Video" ?
+                                        imagePath = await Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                            WebviewScreen(url: _taskData!.task!.url.toString(),howToDoText: _taskData!.task!.description!,
+                                                isYoutube : _taskData!.task!.taskType == "Youtube Video" ? true : false)))
+                                        :
+                                        taskController.launchUrl(_taskData!.task!.url.toString());
                                         if(imagePath != null) {
                                           if (taskController
                                               .pickedFile !=
@@ -785,6 +796,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                         setState(() {
                                           imagePath;
                                         });
+
                                       },
                                       shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(Radius.circular(50))),
@@ -893,7 +905,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                               if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
                                 (_taskData!.completedAt == null) ?
                                 Text(
-                                  'after_completion_of_task_kindly_upload_screenshot'.tr,
+                                  'After completion of task kindly upload screenshot and press submit button.'.tr,
                                   textAlign: TextAlign.start,
                                   style: GoogleFonts.inter(
                                     fontSize: Dimensions.fontSizeDefault,
@@ -954,11 +966,14 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                         ),
                                       ) : const SizedBox(),
                                       if((DateFormat("d\nMMMM").format(DateTime.parse(_taskData!.assignedAt.toString())) == DateFormat("d\nMMMM").format(DateTime.now())))
-                                        _taskData!.completedAt == null
+                                        (_taskData!.completedAt == null || _taskData!.screenShotRejectDes != null)
                                             ? IconButton(
-                                          onPressed: () {
-                                            Get.find<TaskController>().pickGalleryImage(
+                                          onPressed: () async{
+                                            await Get.find<TaskController>().pickGalleryImage(
                                                 _taskData!.taskId.toString());
+                                            setState(() {
+                                              imagePath = taskController.pickedFile!.path;
+                                            });
                                           },
                                           icon: SvgPicture.asset(
                                             Images.download_icon,
@@ -1010,6 +1025,10 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                                 'Please upload screenshot.'
                                                     .tr);
                                           }
+                                        }else {
+                                          showCustomSnackBar(
+                                              'Please upload screenshot.'
+                                                  .tr);
                                         }
                                         setState(() {
                                           imagePath;

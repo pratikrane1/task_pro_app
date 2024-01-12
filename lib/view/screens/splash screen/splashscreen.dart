@@ -8,6 +8,7 @@ import 'package:task_pro/controller/auth_controller.dart';
 import 'package:task_pro/helper/route_helper.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:video_player/video_player.dart';
+import 'package:lottie/lottie.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -17,7 +18,7 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
-  final int splashDuration = 6;
+  final int splashDuration = 7;
   VideoPlayerController? _controller;
 
   @override
@@ -71,15 +72,14 @@ class _SplashscreenState extends State<Splashscreen> {
 
   @override
   Widget build(BuildContext context) {
+    // var height = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: Color(0xff000000),
         body: Center(
-        child: Stack(
-          children: <Widget>[
-            _getVideoBackground(),
-          ],
-        ),
-        // Container(
+        child: _getVideoBackground(),
+
+
+          // Container(
         //   decoration: const BoxDecoration(
         //     image: DecorationImage(
         //         image: AssetImage(Images.splashscreen), fit: BoxFit.fill

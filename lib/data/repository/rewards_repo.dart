@@ -7,10 +7,10 @@ class RewardsRepo extends GetxService {
   final ApiClient apiClient;
   RewardsRepo({required this.apiClient});
 
-  Future<Response> getRewardsData(String month) async {
+  Future<Response> getRewardsData(String date) async {
 
     return await apiClient
-        .getData(AppConstants.REWARDS+"?month=$month",);
+        .getData(AppConstants.REWARDS+"?date=$date",);
   }
 
   Future<Response> getDashPAyoutData() async {

@@ -21,18 +21,13 @@ class RewardsController extends GetxController implements GetxService {
   RewardsModel? get dashPayoutData => _dashPayoutData;
 
 
-  Future<RewardsModel> getRewardsData(String month) async {
+  Future<RewardsModel> getRewardsData(String date) async {
     _isLoading = false;
     _rewardsData = null;
-    Response response = await rewardsRepo.getRewardsData(month);
+    Response response = await rewardsRepo.getRewardsData(date);
     if (response.statusCode == 200) {
 
       _rewardsData = RewardsModel.fromJson(response.body["data"]);
-
-      // final Iterable refactorProductList = response.body["data"] ?? [];
-      // _rewardsData = refactorProductList.map((item) {
-      //   return RewardsModel.fromJson(item);
-      // }).toList();
 
       print(_rewardsData);
       _isLoading = true;
