@@ -8,7 +8,6 @@ import 'package:task_pro/controller/auth_controller.dart';
 import 'package:task_pro/helper/route_helper.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:video_player/video_player.dart';
-import 'package:lottie/lottie.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});

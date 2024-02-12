@@ -48,6 +48,14 @@ class _WebviewScreenState extends State<WebviewScreen> {
   Timer? countdownTimer;
   Duration myDuration = Duration();
 
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+    android: AndroidInAppWebViewOptions(
+      useHybridComposition: true,
+    ),
+    //   crossPlatform: InAppWebViewOptions(
+    //     javaScriptEnabled: true
+    //   )
+  );
 
   @override
   void initState() {
@@ -325,71 +333,96 @@ class _WebviewScreenState extends State<WebviewScreen> {
         body: SafeArea(
           child: Stack(
             children: [
+
               // Platform.isAndroid ?
               WebViewWidget(
                 controller: controller,
               ) ,
-              //     : InAppWebView(
-              //   key: webViewKey,
-              //   initialUrlRequest: URLRequest(url: Uri.parse(widget.url),),
-              //   initialUserScripts: UnmodifiableListView<UserScript>([]),
-              //   // pullToRefreshController: pullToRefreshController,
-              //   onWebViewCreated: (controller) async {
-              //     // _inAppWebViewController!.takeScreenshot();
-              //     capturedImage = await controller.takeScreenshot();
-              //   },
-              //   onLoadStart: (controller, url) async {
-              //     setState(() {
-              //       loadingPercentage = 0;
-              //     });
-              //   },
-              //   onScrollChanged: (controller,a,b)async{
-              //     capturedImage = await controller.takeScreenshot();
-              //   },
-              //   shouldOverrideUrlLoading:
-              //       (controller, navigationAction) async {
-              //     var uri = navigationAction.request.url!;
-              //     capturedImage = await controller.takeScreenshot();
-              //
-              //     return NavigationActionPolicy.ALLOW;
-              //   },
-              //   onLoadStop: (controller, url) async {
-              //     capturedImage = await controller.takeScreenshot();
-              //     pullToRefreshController?.endRefreshing();
-              //     capturedImage = await controller.takeScreenshot();
-              //     setState(() {
-              //       loadingPercentage = 100;
-              //       isPageLoad = true;
-              //     });
-              //
-              //     // if(timerDuration != null){
-              //     //   timerDuration++;
-              //     //   // if(timerDuration == 10)
-              //     // }
-              //     // Timer(await Duration(seconds: 0,minutes: 1), () {
-              //
-              //     // });
-              //   },
-              //   onProgressChanged: (controller, progress) {
-              //     if (progress == 100) {}
-              //     setState(() {
-              //       loadingPercentage = progress;
-              //     });
-              //     setState(() {
-              //       // this.progress = progress / 100;
-              //       // urlController.text = this.url;
-              //     });
-              //   },
-              //   onUpdateVisitedHistory: (controller, url, isReload) {
-              //     setState(() {
-              //       // this.url = url.toString();
-              //       // urlController.text = this.url;
-              //     });
-              //   },
-              //   onConsoleMessage: (controller, consoleMessage) {
-              //     print(consoleMessage);
-              //   },
-              // ),
+              //     :
+            // InAppWebView(
+            //     key: webViewKey,
+            //     initialUrlRequest: URLRequest(url: Uri.parse(widget.url),),
+            //     initialUserScripts: UnmodifiableListView<UserScript>([]),
+            //     initialOptions: options,
+            //   // pullToRefreshController: pullToRefreshController,
+            //     onWebViewCreated: (controller) async {
+            //       // _inAppWebViewController!.takeScreenshot();
+            //       capturedImage = await controller.takeScreenshot();
+            //     },
+            //     onLoadStart: (controller, url) async {
+            //       setState(() {
+            //         loadingPercentage = 0;
+            //       });
+            //     },
+            //     onScrollChanged: (controller,a,b)async{
+            //       capturedImage = await controller.takeScreenshot();
+            //     },
+            //
+            //     shouldOverrideUrlLoading:
+            //         (controller, navigationAction) async {
+            //       var uri = navigationAction.request.url!;
+            //       capturedImage = await controller.takeScreenshot();
+            //       // var uri = navigationAction.request.url!;
+            //
+            //       if (![
+            //         "http",
+            //         "https",
+            //         "file",
+            //         "chrome",
+            //         "data",
+            //         "javascript",
+            //         "about"
+            //       ].contains(uri.scheme)) {
+            //         if (await canLaunchUrl(uri)) {
+            //           // Launch the App
+            //           await launchUrl(
+            //             uri,
+            //           );
+            //           // and cancel the request
+            //           return NavigationActionPolicy.CANCEL;
+            //         }
+            //       }
+            //
+            //       return NavigationActionPolicy.ALLOW;
+            //     },
+            //
+            //     onLoadStop: (controller, url) async {
+            //       capturedImage = await controller.takeScreenshot();
+            //       pullToRefreshController?.endRefreshing();
+            //       capturedImage = await controller.takeScreenshot();
+            //       setState(() {
+            //         loadingPercentage = 100;
+            //         isPageLoad = true;
+            //       });
+            //
+            //       // if(timerDuration != null){
+            //       //   timerDuration++;
+            //       //   // if(timerDuration == 10)
+            //       // }
+            //       // Timer(await Duration(seconds: 0,minutes: 1), () {
+            //
+            //       // });
+            //     },
+            //     onProgressChanged: (controller, progress) {
+            //       if (progress == 100) {}
+            //       setState(() {
+            //         loadingPercentage = progress;
+            //       });
+            //       setState(() {
+            //         // this.progress = progress / 100;
+            //         // urlController.text = this.url;
+            //       });
+            //     },
+            //     onUpdateVisitedHistory: (controller, url, isReload) {
+            //       setState(() {
+            //         // this.url = url.toString();
+            //         // urlController.text = this.url;
+            //       });
+            //     },
+            //     onConsoleMessage: (controller, consoleMessage) {
+            //       print(consoleMessage);
+            //     },
+            //   ),
 
 
               if (loadingPercentage < 100)

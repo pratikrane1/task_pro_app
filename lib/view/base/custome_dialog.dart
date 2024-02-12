@@ -192,6 +192,167 @@ class CustomDialog extends StatelessWidget {
 }
 
 
+class ValidityReasonDialog extends StatelessWidget {
+  ValidityReasonDialog({super.key,required this.isActive});
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  Widget dialogContent(BuildContext context) {
+
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(left: 0.0, right: 0.0),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.only(
+                top: 10.0, bottom: 20, left: 10, right: 10),
+            // margin: EdgeInsets.only(top: 13.0, right: 8.0),
+            decoration: BoxDecoration(
+                color: ThemeColors.whiteColor,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: const <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 0.0,
+                    offset: Offset(0.0, 0.0),
+                  ),
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("task_pro_validity".tr,style: GoogleFonts.montserrat(
+                                        fontSize: Dimensions.fontSizeLarge,
+                                        color: ThemeColors.blackColor,
+                                        fontWeight: FontWeight.w700
+                                    ),),
+                                    const SizedBox(width: 2.0,),
+                                    // Text("(valid for 2 months)",style: GoogleFonts.montserrat(
+                                    //   fontSize: Dimensions.fontSizeExtraSmall,
+                                    //   color: ThemeColors.greyTextColor,
+                                    // ),),
+                                  ],
+                                ),
+                                const SizedBox(height: 5.0,),
+
+                                Row(
+                                  children: [
+                                    Text("Start from: ",style: GoogleFonts.montserrat(
+                                        fontSize: Dimensions.fontSizeDefault,
+                                        fontWeight: FontWeight.w600,
+                                        color: ThemeColors.greyTextColor
+                                    ),),
+                                    Text("36/1/2024",style: GoogleFonts.montserrat(
+                                        fontSize: Dimensions.fontSizeDefault,
+                                        fontWeight: FontWeight.w600,
+                                        color: ThemeColors.primaryColor
+                                    ),),
+
+                                  ],
+                                ),
+
+                                Row(
+                                  children: [
+                                    Text("Expire on: ",style: GoogleFonts.montserrat(
+                                        fontSize: Dimensions.fontSizeDefault,
+                                        fontWeight: FontWeight.w600,
+                                        color: ThemeColors.greyTextColor
+                                    ),),
+                                    Text("36/1/2024",style: GoogleFonts.montserrat(
+                                        fontSize: Dimensions.fontSizeDefault,
+                                        fontWeight: FontWeight.w600,
+                                        color: ThemeColors.primaryColor
+                                    ),),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 15,
+                        child: Row(
+                          children: [
+                            Icon(Icons.circle,size: 10,color: isActive ? ThemeColors.primaryColor : ThemeColors.redColor,),
+                            const SizedBox(width: 2.0,),
+                            Text(isActive ? "Active" : "Expired",style: GoogleFonts.montserrat(
+                                fontSize: Dimensions.fontSizeDefault,
+                                color: ThemeColors.blackColor,
+                                fontWeight: FontWeight.w700
+                            ),),
+                          ],
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "Reason".tr,
+                    style: GoogleFonts.inter(
+                        fontSize: Dimensions.fontSizeOverLarge,
+                        fontWeight: FontWeight.w700,
+                        color: ThemeColors.primaryColor),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 15.0,
+            top: 5.0,
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Icon(Icons.cancel, color: Colors.black)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class LogOutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

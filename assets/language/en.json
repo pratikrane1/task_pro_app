@@ -70,5 +70,8 @@
   "reason_for_rejection" : "Reason For Rejection",
   "add_like" : "Add Like",
   "add_subscription" : "Add Subscription",
-  "video_screen": "Video Screen"
+  "video_screen": "Video Screen",
+  "task_pro_validity" : "Task Pro Validity",
+  "current" : "Current",
+  "last_validity" : "Last Validity"
 }
