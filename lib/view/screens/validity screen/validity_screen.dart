@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_pro/controller/auth_controller.dart';
+import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/controller/validity_controller.dart';
 import 'package:task_pro/data/model/validity_model.dart';
 import 'package:task_pro/util/dimensions.dart';
@@ -24,7 +25,7 @@ class _ValidityScreenState extends State<ValidityScreen> {
   @override
   void initState(){
     super.initState();
-    Get.find<ValidityController>().getTaskProValidityHistory(Get.find<AuthController>().getUserId().toString());
+    Get.find<ValidityController>().getTaskProValidityHistory(Get.find<ProfileController>().profileData!.gainzProUserId.toString());
     // Get.find<ValidityController>().getTaskProValidityHistory("2160");
   }
 

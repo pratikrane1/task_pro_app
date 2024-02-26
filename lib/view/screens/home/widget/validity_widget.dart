@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:task_pro/controller/auth_controller.dart';
+import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/controller/validity_controller.dart';
 import 'package:task_pro/data/model/validity_model.dart';
 import 'package:task_pro/util/dimensions.dart';
@@ -25,7 +26,7 @@ class _ValidityWidgetState extends State<ValidityWidget> {
   @override
   void initState(){
     super.initState();
-    Get.find<ValidityController>().getTaskProValidityData(Get.find<AuthController>().getUserId().toString());
+    Get.find<ValidityController>().getTaskProValidityData(Get.find<ProfileController>().profileData!.gainzProUserId.toString());
   }
 
 
@@ -164,7 +165,6 @@ class _ValidityWidgetState extends State<ValidityWidget> {
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),

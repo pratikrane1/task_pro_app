@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
             await Get.find<TaskController>().getAllTask("");
             await Get.find<ProfileController>().getProfileData();
             await Get.find<RewardsController>().getTodaysPayoutData();
-            await Get.find<ValidityController>().getTaskProValidityData(Get.find<AuthController>().getUserId().toString());
+            await Get.find<ValidityController>().getTaskProValidityData(Get.find<ProfileController>().profileData!.gainzProUserId.toString());
 
           },
           child: CustomScrollView(
