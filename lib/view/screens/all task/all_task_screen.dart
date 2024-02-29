@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:task_pro/controller/task_controller.dart';
 import 'package:task_pro/data/model/all_task_model.dart';
 import 'package:task_pro/util/dimensions.dart';
@@ -9,6 +10,12 @@ import 'package:intl/intl.dart';
 import 'package:task_pro/util/theme_colors.dart';
 import 'package:task_pro/view/screens/task/task_detail_screen.dart';
 import 'package:task_pro/view/screens/task/task_screen.dart';
+
+import '../../../services/ad_provider.dart';
+import 'package:provider/provider.dart';
+
+import 'dart:io';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AllTaskScreen extends StatefulWidget {
   const AllTaskScreen({super.key});
@@ -21,6 +28,9 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
   List<AllTaskModel>? _allTaskList;
   bool _isLoading = false;
 
+
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,6 +38,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
     super.initState();
     Get.find<TaskController>().getAllTaskList("all");
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -166,4 +177,6 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
 
     );
   }
+
+
 }

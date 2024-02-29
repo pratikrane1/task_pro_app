@@ -14,17 +14,53 @@ import 'package:task_pro/view/screens/home/widget/payout_widget.dart';
 import 'package:task_pro/view/screens/home/widget/todays_task_widget.dart';
 import 'package:task_pro/view/screens/home/widget/validity_widget.dart';
 import 'package:task_pro/view/screens/notification/notification_screen.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
+
   const HomeScreen({super.key});
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   bool _isLoading = false;
   ProfileModel? _profileData;
+
+  bool isHomePageBannerLoaded = false;
+  late BannerAd homePageBanner;
+
+  /// Loads a banner ad.
+  Future<void> _loadAd() async {
+    homePageBanner = BannerAd(
+      // adUnitId: AdHelper.homePageBanner(),
+      adUnitId:"ca-app-pub-3940256099942544/6300978111",
+      size: AdSize.banner,
+      // request: request,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            log("HomePage Banner Loaded!");
+            isHomePageBannerLoaded = true;
+          },
+          onAdClosed: (ad) {
+            ad.dispose();
+            isHomePageBannerLoaded = false;
+          },
+          onAdFailedToLoad: (ad, err) {
+            log(err.toString());
+            isHomePageBannerLoaded = false;
+          }
+      ),
+    );
+
+    await homePageBanner.load();
+  }
 
 
   @override
@@ -35,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.find<TaskController>().autoAssignTask();
     Get.find<TaskController>().getAllTask("");
     Get.find<ProfileController>().getProfileData();
+    _loadAd();
   }
 
 
@@ -124,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ///All Task
                         AllTaskWidget(),
 
+                        //Validity Widget
                         ValidityWidget(),
 
                         ///Todays Task
@@ -140,8 +178,25 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+        bottomNavigationBar:SizedBox(
+          // width: widget.adSize.width.toDouble(),
+          // height: widget.adSize.height.toDouble(),
+          width: 200,
+          height:50,
+          child: homePageBanner == null
+          // Nothing to render yet.
+              ? SizedBox()
+          // The actual ad.
+              : AdWidget(ad: homePageBanner),
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    homePageBanner?.dispose();
+    super.dispose();
   }
 }
 

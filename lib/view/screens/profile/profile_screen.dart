@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:task_pro/util/theme_colors.dart';
@@ -9,6 +10,12 @@ import 'package:task_pro/view/base/custome_dialog.dart';
 import 'package:task_pro/view/screens/payout/payout_screen.dart';
 import 'package:task_pro/view/screens/profile/policy%20screen/policy_screen.dart';
 import 'package:task_pro/view/screens/profile/user%20profile/user_profile_details.dart';
+import 'dart:io';
+
+import '../../../services/ad_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../../../services/ad_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,7 +24,40 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  bool intertitialLoaded = false;
+  late InterstitialAd intertitialAd;
+
+  void initializeFullPageAd() async {
+    await InterstitialAd.load(
+      adUnitId: "ca-app-pub-3940256099942544/1033173712",
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            setState(() {
+              intertitialAd = ad;
+              intertitialLoaded = true;
+            });
+          },
+          onAdFailedToLoad: (err) {
+            print(err);
+            intertitialAd.dispose();
+            intertitialLoaded = false;
+          }
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    //saveDeviceTokenAndId();
+    super.initState();
+    initializeFullPageAd();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,6 +199,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
+              // Ad mob
+              InkWell(
+                onTap: (){
+                 if(intertitialLoaded == true)
+                   {
+                     intertitialAd.show();
+                   }
+                },
+                child: ListTile(
+                  minLeadingWidth: 1,
+                  shape: const Border(
+                      bottom: BorderSide(width: 0.5,color: ThemeColors.greyTextColor)
+                  ),
+                  leading: SvgPicture.asset("assets/images/privacy_policy_logo.svg",),
+                  title: Text('Interztitial Ad'.tr,
+                    // textAlign: TextAlign.start,
+                    style: GoogleFonts.inter(
+                      fontSize: Dimensions.fontSizeExtraLarge,
+                      fontWeight: FontWeight.w400,
+                      color: ThemeColors.blackColor,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                ),
+              ),
+
               const SizedBox(height: 10.0,),
 
               ///Logout
@@ -185,11 +251,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   trailing: const Icon(Icons.arrow_forward_ios),
                 ),
               ),
+
             ],
           ),
         ),
       ),
-
     );
   }
+
+
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -6,19 +7,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:task_pro/controller/localization_controller.dart';
 import 'package:task_pro/helper/route_helper.dart';
+import 'package:task_pro/services/ad_provider.dart';
 import 'package:task_pro/util/app_constants.dart';
 import 'package:task_pro/util/messages.dart';
 import 'package:task_pro/view/base/custom_snackbar.dart';
 import 'helper/get_di.dart' as di;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:provider/provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   await Firebase.initializeApp();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
