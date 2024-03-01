@@ -35,43 +35,58 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  text: "complete".tr,
-                  style: GoogleFonts.montserrat(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      color: ThemeColors.blackColor),
+                  // text: "complete".tr,
+                  // style: GoogleFonts.montserrat(
+                  //     fontSize: 30,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ThemeColors.blackColor),
+                  text: " ${"task".tr} ",
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'Montserrat-ExtraBold',
+                    fontWeight: FontWeight.w700,
+                    color: ThemeColors.primaryColor,
+                  ),
                   children: <TextSpan>[
+                    // TextSpan(
+                    //   text: " ${"task".tr} ",
+                    //   style: const TextStyle(
+                    //     fontSize: 30,
+                    //     fontFamily: 'Montserrat-ExtraBold',
+                    //     fontWeight: FontWeight.w700,
+                    //     color: ThemeColors.primaryColor,
+                    //   ),
+                    // ),
                     TextSpan(
-                      text: " ${"task".tr} ",
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontFamily: 'Montserrat-ExtraBold',
-                        fontWeight: FontWeight.w700,
-                        color: ThemeColors.primaryColor,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'earn_easily'.tr,
+                      text: 'Pro'.tr,
                       style: GoogleFonts.montserrat(
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
                         color: ThemeColors.blackColor,
                       ),
                     ),
+                    // TextSpan(
+                    //   text: 'earn_easily'.tr,
+                    //   style: GoogleFonts.montserrat(
+                    //     fontSize: 30,
+                    //     fontWeight: FontWeight.w700,
+                    //     color: ThemeColors.blackColor,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
 
               const SizedBox(height: 10,),
 
-              Text("you_can_complete_your_task_and_earn_money".tr,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: ThemeColors.blackColor,
-              ),
-              ),
+              // Text("you_can_complete_your_task_and_earn_money".tr,
+              // textAlign: TextAlign.center,
+              // style: GoogleFonts.inter(
+              //   fontSize: 20,
+              //   fontWeight: FontWeight.w500,
+              //   color: ThemeColors.blackColor,
+              // ),
+              // ),
 
               const SizedBox(height: 100,),
 

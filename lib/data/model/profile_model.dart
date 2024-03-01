@@ -98,3 +98,22 @@ class ProfileModel {
     return data;
   }
 }
+
+class Model {
+  bool? success;
+  String? message;
+
+  Model({this.success, this.message});
+
+  Model.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    data['message'] = this.message;
+    return data;
+  }
+}

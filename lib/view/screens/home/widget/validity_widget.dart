@@ -5,6 +5,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:task_pro/controller/auth_controller.dart';
 import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/controller/validity_controller.dart';
+import 'package:task_pro/data/model/profile_model.dart';
 import 'package:task_pro/data/model/validity_model.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
@@ -21,12 +22,22 @@ class ValidityWidget extends StatefulWidget {
 class _ValidityWidgetState extends State<ValidityWidget> {
   bool _isLoading = false;
   ValidityModel? _taskProDashValidity;
+  ProfileModel? _profileData;
 
 
   @override
   void initState(){
     super.initState();
-    Get.find<ValidityController>().getTaskProValidityData(Get.find<ProfileController>().profileData!.gainzProUserId.toString());
+    fetchUserProfile();
+  }
+
+  void fetchUserProfile() async {
+    _profileData = await Get.find<ProfileController>().profileData;
+    if (_profileData == null) {
+      _profileData = await Get.find<ProfileController>().getProfileData();
+      Get.find<ValidityController>().getTaskProValidityData(_profileData!.gainzProUserId.toString());
+    }
+    setState(() {});
   }
 
 
@@ -68,7 +79,7 @@ class _ValidityWidgetState extends State<ValidityWidget> {
                               fontWeight: FontWeight.w700
                           ),),
                           const SizedBox(width: 2.0,),
-                          _taskProDashValidity!.validFor != "" ? Text(("${_taskProDashValidity!.validFor}"),style: GoogleFonts.inter(
+                          _taskProDashValidity!.validFor != "" ? Text(("${_taskProDashValidity!.validFor ?? ""}"),style: GoogleFonts.inter(
                             fontSize: Dimensions.fontSizeSmall,
                             fontWeight: FontWeight.w600,
                             color: ThemeColors.primaryColor,

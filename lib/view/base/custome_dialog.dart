@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_pro/controller/auth_controller.dart';
+import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/controller/task_controller.dart';
 import 'package:task_pro/data/api/api_client.dart';
+import 'package:task_pro/data/model/profile_model.dart';
 import 'package:task_pro/data/model/task_model.dart';
 import 'package:task_pro/helper/route_helper.dart';
 import 'package:task_pro/util/dimensions.dart';
@@ -578,6 +580,173 @@ class UploadDialog extends StatelessWidget {
                             String imagePath = await Get.find<TaskController>().saveImage(capturePath!,);
                             print(imagePath);
                             Navigator.pop(context, imagePath);
+                          },
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(50))),
+                          text:  Text(
+                            'yes'.tr,
+                            style:const TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: 'OpenSans-ExtraBold',
+                                fontWeight: FontWeight.w700),
+                          ),
+                          loading: true,
+                          color: ThemeColors.whiteColor,
+                          borderColor: ThemeColors.primaryColor,
+                          textColor: ThemeColors.blackColor,
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(
+                                color: ThemeColors.primaryColor, width: 1),
+                            backgroundColor: ThemeColors.whiteColor,
+                            // color:Colors.red,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(8))),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(
+                        height: 35,
+                        width: 150,
+                        padding: const EdgeInsets.only(left: 10.0, right: 10),
+                        child: AppButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(50))),
+                          text:  Text(
+                            'no'.tr,
+                            style:const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: 'OpenSans-ExtraBold',
+                                fontWeight: FontWeight.w700),
+                          ),
+                          // loading: login is LoginLoading,
+                          loading: true,
+                          color: ThemeColors.whiteColor,
+                          textColor: ThemeColors.whiteColor,
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(
+                                color: ThemeColors.primaryColor, width: 1),
+                            backgroundColor: ThemeColors.primaryColor,
+                            // color:Colors.red,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(8))),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 15.0,
+            top: 18.0,
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Icon(Icons.cancel, color: Colors.black)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class DeleteDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  Widget dialogContent(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(left: 0.0, right: 0.0),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            padding:
+            const EdgeInsets.only(top: 10.0, bottom: 20, left: 10, right: 10),
+            // margin: EdgeInsets.only(top: 13.0, right: 8.0),
+            decoration: BoxDecoration(
+                color: ThemeColors.whiteColor,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: const <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 0.0,
+                    offset: Offset(0.0, 0.0),
+                  ),
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Center(
+                    child: Padding(
+                      padding:const EdgeInsets.all(10.0),
+                      child: Text(
+                        "are_you_sure_delete_acc".tr,
+                        style:const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Montserrat",
+                            color: ThemeColors.blackColor),
+                      ),
+                    ) //
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        height: 35,
+                        width: 150,
+                        padding: const EdgeInsets.only(left: 10.0, right: 10),
+                        child: AppButton(
+                          onPressed: () async{
+                            ProfileModel? _profileData;
+                            Model? data;
+
+                            _profileData = await Get.find<ProfileController>().profileData;
+                            if (_profileData == null) {
+                              _profileData = await Get.find<ProfileController>().getProfileData();
+                              data = await Get.find<ProfileController>().deleteAccount(_profileData.mobileNo.toString());
+                            }else{
+                              data = await Get.find<ProfileController>().deleteAccount(_profileData.mobileNo.toString());
+                            }
+                            showCustomSnackBar(data.message!, isError: false);
+
+                            if(data.success == true) {
+                              Get.find<AuthController>().clearUserNumber();
+                              Get.find<AuthController>().clearUserToken();
+                              Get.find<ApiClient>().updateHeader("", "");
+
+                              Get.offAllNamed(RouteHelper.getLoginRoute());
+                            }
                           },
                           shape: const RoundedRectangleBorder(
                               borderRadius:

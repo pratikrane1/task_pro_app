@@ -12,11 +12,13 @@ class ProfileController extends GetxController implements GetxService {
   bool _isPolicyLoading = false;
   ProfileModel? _profileData;
   String? _policyData;
+  String? _deleteAccData;
 
   bool get isLoading => _isLoading;
   bool get isPolicyLoading => _isPolicyLoading;
   ProfileModel? get profileData => _profileData;
   String? get policyData => _policyData ?? "";
+  String? get deleteAccData => _deleteAccData ?? "";
 
 
   Future<ProfileModel> getProfileData() async {
@@ -48,5 +50,35 @@ class ProfileController extends GetxController implements GetxService {
     }
     update();
     // }
+  }
+
+
+  Future<void> getDeleteAccData() async {
+    _deleteAccData = null;
+    Response response = await profileRepo.getDeleteAccData();
+    if (response.statusCode == 200) {
+
+      _deleteAccData = response.body["data"];
+      print(_deleteAccData);
+      _isLoading = true;
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
+    // }
+  }
+
+
+  Future<Model> deleteAccount(String number) async {
+    Response response = await profileRepo.deleteAccount(number);
+    if (response.statusCode == 200) {
+
+      // _deleteAccData = response.body["message"];
+      _isLoading = true;
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
+    return Model.fromJson(response.body);
   }
 }
