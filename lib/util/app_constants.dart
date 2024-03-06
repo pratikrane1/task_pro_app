@@ -22,6 +22,8 @@ class AppConstants {
   static const String REWARDS = '/show-user-payout';
   static const String DASH_PAYOUT = '/show-dashboard-payout';
   static const String POLICY = '/policy';
+  static const String DELETE_ACC_DATA = '/delete_account_page';
+  static const String DELETE_ACC = '/delete_account';
   static const String YOUTUBE_DURATION_API = 'https://youtube.googleapis.com/youtube/v3/videos';
   static const String TASKPRO_VALIDITY_DASH_STATUS = '/get_taskpro_validity_dashboard';
   static const String TASKPRO_VALIDITY_HISTORY = '/get_taskpro_validity_history';

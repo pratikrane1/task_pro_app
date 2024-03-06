@@ -22,6 +22,8 @@ import '../advertising/advertising_list.dart';
 
 
 
+import 'delete account/delete_account_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -242,6 +244,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   trailing: const Icon(Icons.arrow_forward_ios),
                 ),
               ),
+
+              const SizedBox(height: 10.0,),
+
+              ///Delete account
+              InkWell(
+                onTap: (){
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => DeleteAcooountScreen());
+                },
+                child: ListTile(
+                  minLeadingWidth: 1,
+                  shape: const Border(
+                      bottom: BorderSide(width: 0.5,color: ThemeColors.greyTextColor)
+                  ),
+                  leading: const Icon(Icons.delete_outline,color: ThemeColors.redColor,),
+                  title: Text('delete_account'.tr,
+                    // textAlign: TextAlign.start,
+                    style: GoogleFonts.inter(
+                      fontSize: Dimensions.fontSizeExtraLarge,
+                      fontWeight: FontWeight.w400,
+                      color: ThemeColors.redColor,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                ),
+              ),
+
 
               const SizedBox(height: 10.0,),
 

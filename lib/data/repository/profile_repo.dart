@@ -20,4 +20,14 @@ class ProfileRepo extends GetxService {
       "terms_and_condition" : termsAndConditions
     });
   }
+
+  Future<Response> getDeleteAccData() async {
+    return await apiClient.getData(AppConstants.DELETE_ACC_DATA,);
+  }
+
+  Future<Response> deleteAccount(String number,) async {
+    return await apiClient.postData(AppConstants.DELETE_ACC, {
+      "mobile_no" : number,
+    });
+  }
 }
