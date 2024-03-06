@@ -217,35 +217,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
-              // Ad mob
-              InkWell(
-                onTap: (){
+              // // Ad mob
+              // InkWell(
+              //   onTap: (){
+              //
+              //     Get.to(()=> const AdsListScreen());
+              //    // if(intertitialLoaded == true)
+              //    //   {
+              //    //     intertitialAd.show();
+              //    //   }
+              //   },
+              //   child: ListTile(
+              //     minLeadingWidth: 1,
+              //     shape: const Border(
+              //         bottom: BorderSide(width: 0.5,color: ThemeColors.greyTextColor)
+              //     ),
+              //     leading: SvgPicture.asset("assets/images/privacy_policy_logo.svg",),
+              //     title: Text('Advertisin'.tr,
+              //       // textAlign: TextAlign.start,
+              //       style: GoogleFonts.inter(
+              //         fontSize: Dimensions.fontSizeExtraLarge,
+              //         fontWeight: FontWeight.w400,
+              //         color: ThemeColors.blackColor,
+              //       ),
+              //     ),
+              //     trailing: const Icon(Icons.arrow_forward_ios),
+              //   ),
+              // ),
 
-                  Get.to(()=> const AdsListScreen());
-                 // if(intertitialLoaded == true)
-                 //   {
-                 //     intertitialAd.show();
-                 //   }
-                },
-                child: ListTile(
-                  minLeadingWidth: 1,
-                  shape: const Border(
-                      bottom: BorderSide(width: 0.5,color: ThemeColors.greyTextColor)
-                  ),
-                  leading: SvgPicture.asset("assets/images/privacy_policy_logo.svg",),
-                  title: Text('Advertisin'.tr,
-                    // textAlign: TextAlign.start,
-                    style: GoogleFonts.inter(
-                      fontSize: Dimensions.fontSizeExtraLarge,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.blackColor,
-                    ),
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                ),
-              ),
-
-              const SizedBox(height: 10.0,),
+             // const SizedBox(height: 10.0,),
 
               ///Delete account
               InkWell(
