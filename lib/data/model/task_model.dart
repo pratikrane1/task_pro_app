@@ -168,6 +168,7 @@ class HowToVideo {
 class Task {
   int? id;
   String? title;
+  String? businessName;
   String? description;
   String? taskValidity;
   String? taskType;
@@ -181,6 +182,7 @@ class Task {
   Task(
       {this.id,
         this.title,
+        this.businessName,
         this.description,
         this.taskValidity,
         this.taskType,
@@ -194,6 +196,7 @@ class Task {
   Task.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
+    businessName = json['business_name'];
     description = json['description'];
     taskValidity = json['task_validity'];
     taskType = json['task_type'];
@@ -214,6 +217,7 @@ class Task {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
+    data['business_name'] = this.businessName;
     data['description'] = this.description;
     data['task_validity'] = this.taskValidity;
     data['task_type'] = this.taskType;

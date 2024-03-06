@@ -213,7 +213,7 @@ class _TaskScreenState extends State<TaskScreen> {
                         shrinkWrap: true,
                         physics: const ClampingScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        padding:
+                        padding:                 
                         const EdgeInsets.only(top: 15, bottom: 15, left: 0, right: 10),
                         itemCount: _taskList!.taskList!.length,
                         itemBuilder: (context, index) {
