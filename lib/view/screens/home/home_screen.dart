@@ -9,6 +9,7 @@ import 'package:task_pro/controller/validity_controller.dart';
 import 'package:task_pro/data/model/profile_model.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
+import 'package:task_pro/view/base/google_ads.dart';
 import 'package:task_pro/view/screens/home/widget/all_task_widget.dart';
 import 'package:task_pro/view/screens/home/widget/payout_widget.dart';
 import 'package:task_pro/view/screens/home/widget/todays_task_widget.dart';
@@ -17,6 +18,8 @@ import 'package:task_pro/view/screens/notification/notification_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:developer';
+
+import '../../../util/app_constants.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -33,34 +36,32 @@ class _HomeScreenState extends State<HomeScreen> {
   ProfileModel? _profileData;
 
   bool isHomePageBannerLoaded = false;
-  late BannerAd homePageBanner;
+  BannerAd? homePageBanner;
 
-  /// Loads a banner ad.
-  Future<void> _loadAd() async {
-    homePageBanner = BannerAd(
-      // adUnitId: AdHelper.homePageBanner(),
-      adUnitId:"ca-app-pub-3940256099942544/6300978111",
-      size: AdSize.banner,
-      // request: request,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            log("HomePage Banner Loaded!");
-            isHomePageBannerLoaded = true;
-          },
-          onAdClosed: (ad) {
-            ad.dispose();
-            isHomePageBannerLoaded = false;
-          },
-          onAdFailedToLoad: (ad, err) {
-            log(err.toString());
-            isHomePageBannerLoaded = false;
-          }
-      ),
+  AppOpenAd? appOpenAd;
+
+  // Open ads banner
+  loadAppOpenAd()
+  {
+    AppOpenAd.load(
+        adUnitId: "ca-app-pub-3940256099942544/9257395921",
+        request: AdRequest(),
+        adLoadCallback: AppOpenAdLoadCallback(
+            onAdLoaded: (ad)
+            {
+              appOpenAd=ad;
+              appOpenAd!.show();
+            },
+            onAdFailedToLoad: (error)
+            {
+              print('error');
+            }
+        ),
+        orientation: AppOpenAd.orientationPortrait
     );
-
-    await homePageBanner.load();
   }
+
+
 
 
   @override
@@ -71,9 +72,18 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.find<TaskController>().autoAssignTask();
     Get.find<TaskController>().getAllTask("");
     Get.find<ProfileController>().getProfileData();
-    _loadAd();
+     // _loadAd();
+    callBannerAd();
+    loadAppOpenAd();
   }
 
+  void callBannerAd()async
+  {
+    homePageBanner = await Googleads().loadBannerAd();
+    setState((){
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Nothing to render yet.
               ? SizedBox()
           // The actual ad.
-              : AdWidget(ad: homePageBanner),
+              : AdWidget(ad: homePageBanner!),
         ),
       ),
     );

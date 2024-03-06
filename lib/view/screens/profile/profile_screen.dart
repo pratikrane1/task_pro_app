@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -12,10 +14,13 @@ import 'package:task_pro/view/screens/profile/policy%20screen/policy_screen.dart
 import 'package:task_pro/view/screens/profile/user%20profile/user_profile_details.dart';
 import 'dart:io';
 
-import '../../../services/ad_provider.dart';
+
 import 'package:provider/provider.dart';
 
-import '../../../services/ad_widget.dart';
+import '../../../util/app_constants.dart';
+import '../advertising/advertising_list.dart';
+
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -27,27 +32,38 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-  bool intertitialLoaded = false;
-  late InterstitialAd intertitialAd;
+  bool isHomePageBannerLoaded = false;
+  BannerAd? homePageBanner;
 
-  void initializeFullPageAd() async {
-    await InterstitialAd.load(
-      adUnitId: "ca-app-pub-3940256099942544/1033173712",
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
+  /// Loads a banner ad.
+  Future<void> _loadAd() async {
+    homePageBanner = BannerAd(
+      // adUnitId: AdHelper.homePageBanner(),
+      adUnitId:AppConstants.banneradUnitId,
+      //  adUnitId:"ca-app-pub-8652359680658191/5924662321",
+      //adUnitId:"ca-app-pub-7017789760992330/47449969281",
+      size: AdSize.banner,
+      // request: request,
+      request: const AdRequest(
+        //contentUrl: "https://www.freepik.com"
+      ),
+      listener: BannerAdListener(
           onAdLoaded: (ad) {
-            setState(() {
-              intertitialAd = ad;
-              intertitialLoaded = true;
-            });
+            log("HomePage Banner Loaded!");
+            isHomePageBannerLoaded = true;
           },
-          onAdFailedToLoad: (err) {
-            print(err);
-            intertitialAd.dispose();
-            intertitialLoaded = false;
+          onAdClosed: (ad) {
+            ad.dispose();
+            isHomePageBannerLoaded = false;
+          },
+          onAdFailedToLoad: (ad, err) {
+            log(err.toString());
+            isHomePageBannerLoaded = false;
           }
       ),
     );
+
+    await homePageBanner!.load();
   }
 
   @override
@@ -55,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    initializeFullPageAd();
+    _loadAd();
   }
 
   @override
@@ -202,10 +218,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Ad mob
               InkWell(
                 onTap: (){
-                 if(intertitialLoaded == true)
-                   {
-                     intertitialAd.show();
-                   }
+
+                  Get.to(()=> const AdsListScreen());
+                 // if(intertitialLoaded == true)
+                 //   {
+                 //     intertitialAd.show();
+                 //   }
                 },
                 child: ListTile(
                   minLeadingWidth: 1,
@@ -213,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       bottom: BorderSide(width: 0.5,color: ThemeColors.greyTextColor)
                   ),
                   leading: SvgPicture.asset("assets/images/privacy_policy_logo.svg",),
-                  title: Text('Interztitial Ad'.tr,
+                  title: Text('Advertisin'.tr,
                     // textAlign: TextAlign.start,
                     style: GoogleFonts.inter(
                       fontSize: Dimensions.fontSizeExtraLarge,
@@ -255,6 +273,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar:SizedBox(
+        // width: widget.adSize.width.toDouble(),
+        // height: widget.adSize.height.toDouble(),
+        width: 200,
+        height:50,
+        child: homePageBanner == null
+        // Nothing to render yet.
+            ? SizedBox()
+        // The actual ad.
+            : AdWidget(ad: homePageBanner!),
       ),
     );
   }

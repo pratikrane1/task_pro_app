@@ -10,7 +10,6 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:task_pro/controller/localization_controller.dart';
 import 'package:task_pro/helper/route_helper.dart';
-import 'package:task_pro/services/ad_provider.dart';
 import 'package:task_pro/util/app_constants.dart';
 import 'package:task_pro/util/messages.dart';
 import 'package:task_pro/view/base/custom_snackbar.dart';

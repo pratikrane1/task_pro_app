@@ -51,6 +51,9 @@ class AppConstants {
   static const String instagram = "https://www.instagram.com/gainz.pro/";
   static const String twitter = "https://twitter.com/Gainz_Pro";
 
+  //Google ads adUinit
+
+  static const String banneradUnitId = "ca-app-pub-3940256099942544/6300978111";
 
   static List<LanguageModel> languages = [
     LanguageModel(

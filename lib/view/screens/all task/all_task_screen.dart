@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,12 +12,12 @@ import 'package:intl/intl.dart';
 import 'package:task_pro/util/theme_colors.dart';
 import 'package:task_pro/view/screens/task/task_detail_screen.dart';
 import 'package:task_pro/view/screens/task/task_screen.dart';
-
-import '../../../services/ad_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'dart:io';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import '../../../util/app_constants.dart';
 
 class AllTaskScreen extends StatefulWidget {
   const AllTaskScreen({super.key});
@@ -28,6 +30,39 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
   List<AllTaskModel>? _allTaskList;
   bool _isLoading = false;
 
+  bool isHomePageBannerLoaded = false;
+  late BannerAd homePageBanner;
+
+  /// Loads a banner ad.
+  Future<void> _loadAd() async {
+    homePageBanner = BannerAd(
+      // adUnitId: AdHelper.homePageBanner(),
+      adUnitId:AppConstants.banneradUnitId,
+      //  adUnitId:"ca-app-pub-8652359680658191/5924662321",
+      //adUnitId:"ca-app-pub-7017789760992330/47449969281",
+      size: AdSize.banner,
+      // request: request,
+      request: const AdRequest(
+        //contentUrl: "https://www.freepik.com"
+      ),
+      listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            log("HomePage Banner Loaded!");
+            isHomePageBannerLoaded = true;
+          },
+          onAdClosed: (ad) {
+            ad.dispose();
+            isHomePageBannerLoaded = false;
+          },
+          onAdFailedToLoad: (ad, err) {
+            log(err.toString());
+            isHomePageBannerLoaded = false;
+          }
+      ),
+    );
+
+    await homePageBanner.load();
+  }
 
 
 
@@ -36,6 +71,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    _loadAd();
     Get.find<TaskController>().getAllTaskList("all");
   }
 
@@ -174,7 +210,17 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
             : const Center(child: CircularProgressIndicator(color: ThemeColors.primaryColor,),) ;
         }
       ),
-
+      bottomNavigationBar:SizedBox(
+        // width: widget.adSize.width.toDouble(),
+        // height: widget.adSize.height.toDouble(),
+        width: 200,
+        height:50,
+        child: homePageBanner == null
+        // Nothing to render yet.
+            ? SizedBox()
+        // The actual ad.
+            : AdWidget(ad: homePageBanner),
+      ),
     );
   }
 
