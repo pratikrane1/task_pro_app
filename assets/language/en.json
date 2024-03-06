@@ -76,5 +76,7 @@
   "last_validity" : "Last Validity",
   "delete_account" : "Delete Account",
   "delete" : "Delete",
-  "are_you_sure_delete_acc" : "Are you sure you want to delete account?"
+  "are_you_sure_delete_acc" : "Are you sure you want to delete account?",
+  "copy_name" : "Copy Name",
+  "copy_review" : "Copy Review"
 }
