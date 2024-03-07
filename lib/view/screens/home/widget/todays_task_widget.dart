@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:task_pro/controller/task_controller.dart';
@@ -22,6 +23,42 @@ class _TodaysTaskWidgetState extends State<TodaysTaskWidget> {
   List<AllTaskModel>? _allTaskList;
   bool _isLoading = false;
   double? percentage;
+
+  bool intertitialLoaded = false;
+  late InterstitialAd intertitialAd;
+
+  //InterstitialAds
+
+  void initializeFullPageAd() async {
+    await InterstitialAd.load(
+      // adUnitId: "ca-app-pub-3940256099942544/1033173712",
+      // adUnitId: "ca-app-pub-7017789760992330/1544118513",
+      adUnitId: "ca-app-pub-3940256099942544/1033173712",
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            setState(() {
+              intertitialAd = ad;
+              intertitialLoaded = true;
+            });
+          },
+          onAdFailedToLoad: (err) {
+            print(err);
+            intertitialAd.dispose();
+            intertitialLoaded = false;
+          }
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    //saveDeviceTokenAndId();
+    super.initState();
+    initializeFullPageAd();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +192,8 @@ class _TodaysTaskWidgetState extends State<TodaysTaskWidget> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                   // onTap:() => Navigator.push(context, MaterialPageRoute(builder: (context)=>TaskScreen(assignTaskDate: _allTaskList![0].assignedAt.toString(),))),
-                                  onTap:() => Get.to(()=>TaskScreen(assignTaskDate: _allTaskList![0].assignedAt.toString(),)),
+                                  onTap:() => Get.to(()=>TaskScreen(assignTaskDate: _allTaskList![0].assignedAt.toString(),),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:task_pro/controller/auth_controller.dart';
 import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/data/api/api_client.dart';
@@ -8,6 +11,8 @@ import 'package:task_pro/data/model/profile_model.dart';
 import 'package:task_pro/helper/route_helper.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
+
+import '../../../../util/app_constants.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -20,11 +25,46 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   bool _isLoading = false;
   ProfileModel? _profileData;
 
+  bool isHomePageBannerLoaded = false;
+  BannerAd? homePageBanner;
+
+  /// Loads a banner ad.
+  Future<void> _loadAd() async {
+    homePageBanner = BannerAd(
+      // adUnitId: AdHelper.homePageBanner(),
+      adUnitId:AppConstants.banneradUnitId,
+      //  adUnitId:"ca-app-pub-8652359680658191/5924662321",
+      //adUnitId:"ca-app-pub-7017789760992330/47449969281",
+      size: AdSize.banner,
+      // request: request,
+      request: const AdRequest(
+        //contentUrl: "https://www.freepik.com"
+      ),
+      listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            log("HomePage Banner Loaded!");
+            isHomePageBannerLoaded = true;
+          },
+          onAdClosed: (ad) {
+            ad.dispose();
+            isHomePageBannerLoaded = false;
+          },
+          onAdFailedToLoad: (ad, err) {
+            log(err.toString());
+            isHomePageBannerLoaded = false;
+          }
+      ),
+    );
+
+    await homePageBanner!.load();
+  }
+
 
   @override
   void initState(){
     super.initState();
     Get.find<ProfileController>().getProfileData();
+    _loadAd();
   }
 
   @override
@@ -181,7 +221,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           : const Center(child: CircularProgressIndicator(color: ThemeColors.primaryColor,),);
         }
       ),
-
+      bottomNavigationBar:SizedBox(
+        // width: widget.adSize.width.toDouble(),
+        // height: widget.adSize.height.toDouble(),
+        width: 200,
+        height:50,
+        child: homePageBanner == null
+        // Nothing to render yet.
+            ? SizedBox()
+        // The actual ad.
+            : AdWidget(ad: homePageBanner!),
+      ),
     );
   }
 }

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:task_pro/controller/rewards_controller.dart';
 import 'package:task_pro/data/model/rewards_model.dart';
 import 'package:task_pro/util/dimensions.dart';
@@ -9,6 +12,9 @@ import 'package:task_pro/util/images.dart';
 import 'package:task_pro/util/theme_colors.dart';
 import 'package:task_pro/view/screens/payout/widget/level_card_widget.dart';
 import 'package:intl/intl.dart';
+
+import '../../../util/app_constants.dart';
+import '../../base/google_ads.dart';
 
 class RewardsScreen extends StatefulWidget {
   const RewardsScreen({super.key});
@@ -28,11 +34,48 @@ class _RewardsScreenState extends State<RewardsScreen> {
   DateTime currentDate = DateTime.now();
   String? selectedDate;
 
+  bool isHomePageBannerLoaded = false;
+   BannerAd? homePageBanner;
+
+  /// Loads a banner ad.
+  Future<void> _loadAd() async {
+    homePageBanner = BannerAd(
+      // adUnitId: AdHelper.homePageBanner(),
+      adUnitId:AppConstants.banneradUnitId,
+      //  adUnitId:"ca-app-pub-8652359680658191/5924662321",
+      //adUnitId:"ca-app-pub-7017789760992330/47449969281",
+      size: AdSize.banner,
+      // request: request,
+      request: const AdRequest(
+        //contentUrl: "https://www.freepik.com"
+      ),
+      listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            log("HomePage Banner Loaded!");
+            isHomePageBannerLoaded = true;
+          },
+          onAdClosed: (ad) {
+            ad.dispose();
+            isHomePageBannerLoaded = false;
+          },
+          onAdFailedToLoad: (ad, err) {
+            log(err.toString());
+            isHomePageBannerLoaded = false;
+          }
+      ),
+    );
+
+    await homePageBanner!.load();
+  }
+
   @override
   void initState(){
     super.initState();
+    Googleads().initializeFullPageAd();
     selectedDate = DateFormat('yyyy-MM-dd').format(currentDate);
     Get.find<RewardsController>().getRewardsData(selectedDate!,);
+    _loadAd();
+
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -370,12 +413,13 @@ class _RewardsScreenState extends State<RewardsScreen> {
           );
         }),
       bottomNavigationBar: Container(
-        height: 140,
+        height: 180,
         color: ThemeColors.secondaryColor,
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -455,6 +499,17 @@ class _RewardsScreenState extends State<RewardsScreen> {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              // width: widget.adSize.width.toDouble(),
+              // height: widget.adSize.height.toDouble(),
+              width: 320,
+              height:40,
+              child: homePageBanner == null
+              // Nothing to render yet.
+                  ? SizedBox()
+              // The actual ad.
+                  : AdWidget(ad: homePageBanner!),
             ),
           ],
         ),

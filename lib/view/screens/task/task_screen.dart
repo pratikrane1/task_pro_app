@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:task_pro/controller/task_controller.dart';
 import 'package:task_pro/data/model/task_model.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
+import 'package:task_pro/view/base/google_ads.dart';
 import 'package:task_pro/view/screens/task/task_detail_screen.dart';
 import 'package:intl/intl.dart';
 
@@ -22,11 +24,45 @@ class _TaskScreenState extends State<TaskScreen> {
   bool _isLoading = false;
   double? percentage = 0.0;
 
+  // bool intertitialLoaded = false;
+  //  InterstitialAd? intertitialAd;
+  //
+  // //InterstitialAds
+  //
+  // void initializeFullPageAd() async {
+  //   await InterstitialAd.load(
+  //     // adUnitId: "ca-app-pub-3940256099942544/1033173712",
+  //     // adUnitId: "ca-app-pub-7017789760992330/1544118513",
+  //     adUnitId: "ca-app-pub-3940256099942544/1033173712",
+  //     request: AdRequest(),
+  //     adLoadCallback: InterstitialAdLoadCallback(
+  //         onAdLoaded: (ad)async {
+  //           print(ad);
+  //           setState(() {
+  //             intertitialAd = ad;
+  //             intertitialLoaded = true;
+  //           });
+  //           if(intertitialLoaded == true)
+  //           { await intertitialAd!.show();}
+  //         },
+  //         onAdFailedToLoad: (err) {
+  //           print(err);
+  //           intertitialAd!.dispose();
+  //           intertitialLoaded = false;
+  //         }
+  //     ),
+  //   );
+  // }
+
   @override
   void initState() {
+
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+
+    Googleads().initializeFullPageAd();
+
     Get.find<TaskController>().getTask(widget.assignTaskDate);
   }
 
@@ -127,7 +163,8 @@ class _TaskScreenState extends State<TaskScreen> {
             onRefresh: () async {
               await Get.find<TaskController>().getTask(widget.assignTaskDate);
             },
-            child: SingleChildScrollView(
+            child:
+            SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
