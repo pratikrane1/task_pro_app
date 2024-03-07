@@ -76,7 +76,17 @@ class _HomeScreenState extends State<HomeScreen> {
      // _loadAd();
     callBannerAd();
     // loadAppOpenAd();
-   // Get.find<GoogleAdController>().appOpenAd!.show();
+    openAd();
+  }
+
+  void openAd()async{
+    if(Get.find<GoogleAdController>().appOpenAd!= null) {
+      Get.find<GoogleAdController>().appOpenAd!.show();
+    } else{
+      await Get.find<GoogleAdController>().loadAppOpenAd();
+      Get.find<GoogleAdController>().appOpenAd!.show();
+
+    }
   }
 
   void callBannerAd()async

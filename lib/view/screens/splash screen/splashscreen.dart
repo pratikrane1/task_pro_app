@@ -28,11 +28,14 @@ class _SplashscreenState extends State<Splashscreen> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-
     videoController();
     startTime();
+    callAd();
+  }
 
-    Get.find<GoogleAdController>().loadAppOpenAd();
+  void callAd()async{
+    await Get.find<GoogleAdController>().loadAppOpenAd();
+
   }
 
   @override
