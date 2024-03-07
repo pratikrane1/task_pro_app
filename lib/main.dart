@@ -13,6 +13,7 @@ import 'package:task_pro/helper/route_helper.dart';
 import 'package:task_pro/util/app_constants.dart';
 import 'package:task_pro/util/messages.dart';
 import 'package:task_pro/view/base/custom_snackbar.dart';
+import 'package:task_pro/view/base/google_ads.dart';
 import 'helper/get_di.dart' as di;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_app_update/in_app_update.dart';

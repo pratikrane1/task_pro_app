@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:task_pro/controller/auth_controller.dart';
+import 'package:task_pro/controller/google_ad_controller.dart';
 import 'package:task_pro/helper/route_helper.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:video_player/video_player.dart';
@@ -30,6 +31,8 @@ class _SplashscreenState extends State<Splashscreen> {
 
     videoController();
     startTime();
+
+    Get.find<GoogleAdController>().loadAppOpenAd();
   }
 
   @override

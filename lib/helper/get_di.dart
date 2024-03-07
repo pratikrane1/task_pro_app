@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_pro/controller/auth_controller.dart';
+import 'package:task_pro/controller/google_ad_controller.dart';
 import 'package:task_pro/controller/localization_controller.dart';
 import 'package:task_pro/controller/notification_controller.dart';
 import 'package:task_pro/controller/profile_controller.dart';
@@ -12,6 +13,7 @@ import 'package:task_pro/controller/validity_controller.dart';
 import 'package:task_pro/data/api/api_client.dart';
 import 'package:task_pro/data/model/language_model.dart';
 import 'package:task_pro/data/repository/auth_repo.dart';
+import 'package:task_pro/data/repository/google_ad_repo.dart';
 import 'package:task_pro/data/repository/language_repo.dart';
 import 'package:task_pro/data/repository/notification_repo.dart';
 import 'package:task_pro/data/repository/profile_repo.dart';
@@ -34,6 +36,7 @@ Future<Map<String, Map<String, String>>>  init() async {
   Get.lazyPut(() => RewardsRepo(apiClient: Get.find()));
   Get.lazyPut(() => NotificationRepo(apiClient: Get.find()));
   Get.lazyPut(() => ValidityRepo(apiClient: Get.find()));
+  Get.lazyPut(() => GoogleAdRepo(apiClient: Get.find()));
 
 
   // Controller
@@ -44,6 +47,7 @@ Future<Map<String, Map<String, String>>>  init() async {
   Get.lazyPut(() => RewardsController(rewardsRepo: Get.find()));
   Get.lazyPut(() => NotificationController(notificationRepo: Get.find()));
   Get.lazyPut(() => ValidityController(validityRepo: Get.find()));
+  Get.lazyPut(() => GoogleAdController(googleAdRepo: Get.find()));
 
 
   // Retrieving localized data

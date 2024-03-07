@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_pro/controller/auth_controller.dart';
+import 'package:task_pro/controller/google_ad_controller.dart';
 import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/controller/rewards_controller.dart';
 import 'package:task_pro/controller/task_controller.dart';
@@ -74,7 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.find<ProfileController>().getProfileData();
      // _loadAd();
     callBannerAd();
-    loadAppOpenAd();
+    // loadAppOpenAd();
+    // Googleads().appOpenAd!.show();
+    Get.find<GoogleAdController>().appOpenAd!.show();
   }
 
   void callBannerAd()async
