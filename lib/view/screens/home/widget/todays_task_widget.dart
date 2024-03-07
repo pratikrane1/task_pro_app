@@ -24,39 +24,12 @@ class _TodaysTaskWidgetState extends State<TodaysTaskWidget> {
   bool _isLoading = false;
   double? percentage;
 
-  bool intertitialLoaded = false;
-  late InterstitialAd intertitialAd;
-
-  //InterstitialAds
-
-  void initializeFullPageAd() async {
-    await InterstitialAd.load(
-      // adUnitId: "ca-app-pub-3940256099942544/1033173712",
-      // adUnitId: "ca-app-pub-7017789760992330/1544118513",
-      adUnitId: "ca-app-pub-3940256099942544/1033173712",
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (ad) {
-            setState(() {
-              intertitialAd = ad;
-              intertitialLoaded = true;
-            });
-          },
-          onAdFailedToLoad: (err) {
-            print(err);
-            intertitialAd.dispose();
-            intertitialLoaded = false;
-          }
-      ),
-    );
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    initializeFullPageAd();
   }
 
 

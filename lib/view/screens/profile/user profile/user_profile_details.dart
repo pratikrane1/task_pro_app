@@ -11,6 +11,7 @@ import 'package:task_pro/data/model/profile_model.dart';
 import 'package:task_pro/helper/route_helper.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
+import 'package:task_pro/view/base/google_ads.dart';
 
 import '../../../../util/app_constants.dart';
 
@@ -28,43 +29,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   bool isHomePageBannerLoaded = false;
   BannerAd? homePageBanner;
 
-  /// Loads a banner ad.
-  Future<void> _loadAd() async {
-    homePageBanner = BannerAd(
-      // adUnitId: AdHelper.homePageBanner(),
-      adUnitId:AppConstants.banneradUnitId,
-      //  adUnitId:"ca-app-pub-8652359680658191/5924662321",
-      //adUnitId:"ca-app-pub-7017789760992330/47449969281",
-      size: AdSize.banner,
-      // request: request,
-      request: const AdRequest(
-        //contentUrl: "https://www.freepik.com"
-      ),
-      listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            log("HomePage Banner Loaded!");
-            isHomePageBannerLoaded = true;
-          },
-          onAdClosed: (ad) {
-            ad.dispose();
-            isHomePageBannerLoaded = false;
-          },
-          onAdFailedToLoad: (ad, err) {
-            log(err.toString());
-            isHomePageBannerLoaded = false;
-          }
-      ),
-    );
-
-    await homePageBanner!.load();
-  }
-
-
   @override
   void initState(){
     super.initState();
     Get.find<ProfileController>().getProfileData();
-    _loadAd();
+    callBannerAd();
+  }
+
+  void callBannerAd()async
+  {
+    homePageBanner = await Googleads().loadBannerAd();
+    setState((){
+
+    });
   }
 
   @override

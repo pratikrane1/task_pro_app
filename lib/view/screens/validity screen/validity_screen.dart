@@ -7,6 +7,7 @@ import 'package:task_pro/controller/validity_controller.dart';
 import 'package:task_pro/data/model/validity_model.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
+import 'package:task_pro/view/base/google_ads.dart';
 import 'package:task_pro/view/screens/validity%20screen/widget/validity_card_widget.dart';
 
 class ValidityScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _ValidityScreenState extends State<ValidityScreen> {
   @override
   void initState(){
     super.initState();
+    Googleads().initializeFullPageAd();
     Get.find<ValidityController>().getTaskProValidityHistory(Get.find<ProfileController>().profileData!.gainzProUserId.toString());
     // Get.find<ValidityController>().getTaskProValidityHistory("2160");
   }
