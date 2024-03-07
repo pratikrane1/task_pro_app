@@ -9,6 +9,7 @@ import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/images.dart';
 import 'package:task_pro/util/theme_colors.dart';
 import 'package:task_pro/view/base/custome_dialog.dart';
+import 'package:task_pro/view/base/google_ads.dart';
 import 'package:task_pro/view/screens/payout/payout_screen.dart';
 import 'package:task_pro/view/screens/profile/policy%20screen/policy_screen.dart';
 import 'package:task_pro/view/screens/profile/user%20profile/user_profile_details.dart';
@@ -37,43 +38,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isHomePageBannerLoaded = false;
   BannerAd? homePageBanner;
 
-  /// Loads a banner ad.
-  Future<void> _loadAd() async {
-    homePageBanner = BannerAd(
-      // adUnitId: AdHelper.homePageBanner(),
-      adUnitId:AppConstants.banneradUnitId,
-      //  adUnitId:"ca-app-pub-8652359680658191/5924662321",
-      //adUnitId:"ca-app-pub-7017789760992330/47449969281",
-      size: AdSize.banner,
-      // request: request,
-      request: const AdRequest(
-        //contentUrl: "https://www.freepik.com"
-      ),
-      listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            log("HomePage Banner Loaded!");
-            isHomePageBannerLoaded = true;
-          },
-          onAdClosed: (ad) {
-            ad.dispose();
-            isHomePageBannerLoaded = false;
-          },
-          onAdFailedToLoad: (ad, err) {
-            log(err.toString());
-            isHomePageBannerLoaded = false;
-          }
-      ),
-    );
-
-    await homePageBanner!.load();
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _loadAd();
+    callBannerAd();
+  }
+
+  void callBannerAd()async
+  {
+    homePageBanner = await Googleads().loadBannerAd();
+    setState((){
+
+    });
   }
 
   @override
@@ -278,6 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ///Logout
               InkWell(
                 onTap: (){
+                  Googleads().initializeFullPageAd();
                   showDialog(
                       context: context,
                       builder: (BuildContext context) => LogOutDialog());

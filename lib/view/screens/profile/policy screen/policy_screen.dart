@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:task_pro/controller/profile_controller.dart';
 import 'package:task_pro/util/dimensions.dart';
 import 'package:task_pro/util/theme_colors.dart';
+
+import '../../../base/google_ads.dart';
 
 class PolicyScreen extends StatefulWidget {
   const PolicyScreen({required this.isPrivacyPolicy,super.key});
@@ -16,11 +19,21 @@ class PolicyScreen extends StatefulWidget {
 
 class _PolicyScreenState extends State<PolicyScreen> {
   String? policyData;
+  BannerAd? homePageBanner;
 
   @override
   void initState() {
     super.initState();
     Get.find<ProfileController>().getPolicy(widget.isPrivacyPolicy == 0 ? "1" : "0", widget.isPrivacyPolicy == 0 ? "0" : "1");
+    callBannerAd();
+  }
+
+  void callBannerAd()async
+  {
+    homePageBanner = await Googleads().loadBannerAd();
+    setState((){
+
+    });
   }
   
   @override

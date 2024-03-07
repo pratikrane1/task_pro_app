@@ -37,36 +37,6 @@ class _RewardsScreenState extends State<RewardsScreen> {
   bool isHomePageBannerLoaded = false;
    BannerAd? homePageBanner;
 
-  /// Loads a banner ad.
-  Future<void> _loadAd() async {
-    homePageBanner = BannerAd(
-      // adUnitId: AdHelper.homePageBanner(),
-      adUnitId:AppConstants.banneradUnitId,
-      //  adUnitId:"ca-app-pub-8652359680658191/5924662321",
-      //adUnitId:"ca-app-pub-7017789760992330/47449969281",
-      size: AdSize.banner,
-      // request: request,
-      request: const AdRequest(
-        //contentUrl: "https://www.freepik.com"
-      ),
-      listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            log("HomePage Banner Loaded!");
-            isHomePageBannerLoaded = true;
-          },
-          onAdClosed: (ad) {
-            ad.dispose();
-            isHomePageBannerLoaded = false;
-          },
-          onAdFailedToLoad: (ad, err) {
-            log(err.toString());
-            isHomePageBannerLoaded = false;
-          }
-      ),
-    );
-
-    await homePageBanner!.load();
-  }
 
   @override
   void initState(){
@@ -74,8 +44,15 @@ class _RewardsScreenState extends State<RewardsScreen> {
     Googleads().initializeFullPageAd();
     selectedDate = DateFormat('yyyy-MM-dd').format(currentDate);
     Get.find<RewardsController>().getRewardsData(selectedDate!,);
-    _loadAd();
+    callBannerAd();
+  }
 
+  void callBannerAd()async
+  {
+    homePageBanner = await Googleads().loadBannerAd();
+    setState((){
+
+    });
   }
 
   Future<Null> _selectDate(BuildContext context) async {

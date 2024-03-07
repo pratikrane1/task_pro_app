@@ -19,6 +19,8 @@ import 'package:task_pro/view/screens/task/video_screen.dart';
 import 'package:task_pro/view/screens/task/webview_screen.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../base/google_ads.dart';
+
 class TaskDetailScreen extends StatefulWidget {
   const TaskDetailScreen(
       {required this.taskId, required this.taskList, super.key});
@@ -1166,7 +1168,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                   padding: const EdgeInsets.only(left: 0.0, right: 10),
                                   child: AppButton(
                                     onPressed: ()async {
+                                      Googleads().initializeFullPageAd();
                                       if(imagePath != null) {
+
                                         if (taskController
                                             .pickedFile !=
                                             null) {
