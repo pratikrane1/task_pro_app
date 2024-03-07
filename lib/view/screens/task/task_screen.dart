@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:task_pro/controller/google_ad_controller.dart';
 import 'package:task_pro/controller/task_controller.dart';
 import 'package:task_pro/data/model/task_model.dart';
 import 'package:task_pro/util/dimensions.dart';
@@ -62,6 +63,7 @@ class _TaskScreenState extends State<TaskScreen> {
     super.initState();
 
     Googleads().initializeFullPageAd();
+    // Get.find<GoogleAdController>().initializeFullPageAd();
 
     Get.find<TaskController>().getTask(widget.assignTaskDate);
   }

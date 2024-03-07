@@ -1168,7 +1168,6 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                   padding: const EdgeInsets.only(left: 0.0, right: 10),
                                   child: AppButton(
                                     onPressed: ()async {
-                                      Googleads().initializeFullPageAd();
                                       if(imagePath != null) {
 
                                         if (taskController
@@ -1185,6 +1184,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                               widget
                                                   .taskList!.id
                                                   .toString());
+                                          Googleads().initializeFullPageAd();
+
                                           showCustomSnackBar(
                                               'Task Submitted Successfully.'
                                                   .tr,isError: false);
@@ -1340,6 +1341,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                                                 widget
                                                     .taskList!.id
                                                     .toString());
+                                            Googleads().initializeFullPageAd();
                                             showCustomSnackBar(
                                                 'Task Submitted Successfully.'
                                                     .tr,isError: false);

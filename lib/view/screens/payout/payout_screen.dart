@@ -41,7 +41,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
   @override
   void initState(){
     super.initState();
-    Googleads().initializeFullPageAd();
+    // Googleads().initializeFullPageAd();
     selectedDate = DateFormat('yyyy-MM-dd').format(currentDate);
     Get.find<RewardsController>().getRewardsData(selectedDate!,);
     callBannerAd();

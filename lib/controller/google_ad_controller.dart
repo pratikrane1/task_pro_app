@@ -35,4 +35,20 @@ class GoogleAdController extends GetxController implements GetxService {
 
     return _appOpenAd!;
   }
+
+  void initializeFullPageAd() async {
+    await InterstitialAd.load(
+      // adUnitId: "ca-app-pub-3940256099942544/1033173712",
+      // adUnitId: "ca-app-pub-7017789760992330/1544118513",
+      adUnitId: "ca-app-pub-3940256099942544/1033173712",
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) async {
+        print(ad);
+        await ad.show();
+      }, onAdFailedToLoad: (err) {
+        print(err);
+      }),
+    );
+  }
+
 }
