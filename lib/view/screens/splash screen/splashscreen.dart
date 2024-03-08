@@ -35,7 +35,6 @@ class _SplashscreenState extends State<Splashscreen> {
 
   void callAd()async{
     await Get.find<GoogleAdController>().loadAppOpenAd();
-
   }
 
   @override
