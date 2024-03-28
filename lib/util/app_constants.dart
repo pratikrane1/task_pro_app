@@ -56,6 +56,7 @@ class AppConstants {
   //Google ads adUinit
 
   static const String banneradUnitId = "ca-app-pub-3940256099942544/6300978111";
+  static const String appopenadUnitId = "ca-app-pub-3940256099942544/6300978111";
 
   static List<LanguageModel> languages = [
     LanguageModel(
